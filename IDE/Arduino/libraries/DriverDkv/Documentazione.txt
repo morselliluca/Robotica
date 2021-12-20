@@ -1,0 +1,32 @@
+Pin Enable va portato a VDD o High:
+	Nella scheda il pin EN va portato in High per Accendere entrambi i dirver
+Pin PWM negato portato a GND o LOW:
+	Nella scheda per ogni driver ce pwm e pwm negato il pin pwm negato va 
+	portato a gnd o saldato con un jumper a GND
+
+
+DriverDkv(unsigned char INA1,
+                     unsigned char INB1,
+                     unsigned char PWM1,
+                     unsigned char INA2,
+                     unsigned char INB2,
+                     unsigned char PWM2,
+                     unsigned char ENA1,
+                     unsigned char ENB1,
+                     unsigned char ENA2,
+                     unsigned char ENB2,
+                     unsigned char ROT,
+                     unsigned char DIAM)
+contstruttore 
+Example:
+DriverDkv Driver = DriverDkv(22, 21, 23, 14, 13, 15);
+
+setM1Speed(int speed);
+mette la velocita alla porta 1 da -255 a 255 con 0 fermo
+Example
+Driver.setM1Speed(100);
+
+void setSpeeds(int m1Speed, int m2Speed);
+mette la velocita alla porta 1 e 2 da -255 a 255 con 0 fermo
+Example
+Driver.setSpeeds(100, 100);

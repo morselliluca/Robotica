@@ -156,6 +156,7 @@ void DriverDkv::MoveAuto(int mm)
 
 void DriverDkv::TurnAuto(int gradi)
 {
+    int a = sin(10);
 }
 
 int DriverDkv::readencoder(int inputDT, int inputCLK, int counter) {

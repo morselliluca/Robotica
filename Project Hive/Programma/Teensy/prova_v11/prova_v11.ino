@@ -26,6 +26,8 @@
 
 #define startsw 37 //start switch
 
+#define pippo 32
+
 // Color definitions
 #define BLACK    0x0000
 #define BLUE     0x001F

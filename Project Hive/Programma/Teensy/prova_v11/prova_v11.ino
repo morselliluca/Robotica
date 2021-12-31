@@ -144,8 +144,8 @@ void setup() {
    Serial.println("k2 = " + k2);
    gfx -> println("k2 = " + k2);
    
-   Driver1.setSpeeds(254, 254);
-   Driver2.setSpeeds(254, 254);
+   Driver1.SetSpeeds(254, 254);
+   Driver2.SetSpeeds(254, 254);
    for (int i = 0; i < 200; i++) {
       counter1 = readencoder(encoderA1, encoderB1, counter1); //read encoder 1
       counter2 = readencoder(encoderA2, encoderB2, counter2); //read encoder 2
@@ -153,8 +153,8 @@ void setup() {
       counter4 = readencoder(encoderA4, encoderB4, counter4); //read encoder 4
       delay(1);
    }
-   Driver1.setSpeeds(0, 0); //imposto velocita driver 1
-   Driver2.setSpeeds(0, 0); //imposto velocita driver 2
+   Driver1.SetSpeeds(0, 0); //imposto velocita driver 1
+   Driver2.SetSpeeds(0, 0); //imposto velocita driver 2
 
    if (counter1 != 0) {
       Serial.println("M1: GO");

@@ -36,16 +36,20 @@ class DriverDkv
     // PUBLIC METHODS
     int Setup();
     int readencoder(int inputDT, int inputCLK, int counter);
-
-    void setM1Speed(int speed); // Set speed for M1.
-    void setM2Speed(int speed); // Set speed for M2.
-    void setSpeeds(int m1Speed, int m2Speed); // Set speed for both M1 and M2.
+    //normal
+    void SetM1Speed(int speed); // Set speed for M1.
+    void SetM2Speed(int speed); // Set speed for M2.
+    void SetSpeeds(int m1Speed, int m2Speed); // Set speed for both M1 and M2.
+    //smothed
+    void SmoothSetM1Speed(int speed); // Set speed for M1.
+    void SmoothSetM2Speed(int speed); // Set speed for M2.
+    void SmoothSetSpeeds(int m1Speed, int m2Speed); // Set speed for both M1 and M2.
     //experimental
-    void Move(int m1Speed, int m2Speed, int mm); 
-    void Turn(int m1Speed, int m2Speed, int angolo);
+    void Move(int Speed, int mm); 
+    void Turn(int Speed, int angolo);
     //experimental+
-    void MoveAuto(int m1Speed, int m2Speed, int mm); 
-    void TurnAuto(int m1Speed, int m2Speed, int angolo);
+    void MoveAuto(int mm); 
+    void TurnAuto(int angolo);
 
     
 

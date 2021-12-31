@@ -81,13 +81,14 @@ DriverDkv::DriverDkv(unsigned char INA1,
 int DriverDkv::Setup()
 {
 if(experimental){
-    setSpeeds(255, 255);
+    SetSpeeds(255, 255);
 
     for (int i = 0; i < 200; i++) {
         counter1 = readencoder(_ENA1, _ENB1, counter1); //read encoder 1
         counter2 = readencoder(_ENA2, _ENB2, counter2); //read encoder 2
         delay(1);
     }
+    SetSpeeds(0, 0);
 
     if (counter1 > counter2) {
         M1 = true;
@@ -107,42 +108,62 @@ if(experimental){
 }
 }
 
-void DriverDkv::Move(int m1Speed, int m2Speed, int mm)
+void DriverDkv::Move(int Speed, int mm)
 {
 if(experimental){
-        double rotation = (mm / (_DIAM * 3.14)) * _ROT;
+    double distance = (mm / (_DIAM * 3.14)) * _ROT;
     double media = 0;
 
-    setSpeeds(m1Speed, m2Speed);
+    while (media < distance) {
 
-    while (media < rotation) {
+        SmoothSetSpeeds(Speed, Speed);
+
         counter1 = readencoder(_ENA1, _ENB1, counter1); //read encoder 1
         counter2 = readencoder(_ENA2, _ENB2, counter2); //read encoder 2
+        counter1 = abs(counter1);
+        counter2 = abs(counter2);
         media = media + ((counter1 + counter2) / 2);
     }
 
-    setSpeeds(0, 0);
+    SetSpeeds(0, 0);
 
     counter1 = 0;
     counter2 = 0;
 }
 }
 
-void DriverDkv::Turn(int m1Speed, int m2Speed, int angolo)
+void DriverDkv::Turn(int Speed, int angolo)
 {
 if(experimental){
+    bool dir;
+    if (angolo < 0) {
+        dir = true;
+    }
+    else {
+        dir = false;
+    }
     double rotation = _LARG / ((angolo / 360) * _DIAM) * _ROT;
     double media = 0;
 
-    setSpeeds(m1Speed, m2Speed);
 
     while (media < rotation) {
+
+
+        if (dir) {
+            SmoothSetSpeeds(Speed, (Speed * -1));
+        } 
+        else {
+            SmoothSetSpeeds((Speed * -1), Speed);
+        }
+
         counter1 = readencoder(_ENA1, _ENB1, counter1); //read encoder 1
         counter2 = readencoder(_ENA2, _ENB2, counter2); //read encoder 2
+        counter1 = abs(counter1);
+        counter2 = abs(counter2);
         media = media + ((counter1 + counter2) / 2);
     }
 
-    setSpeeds(0, 0);
+    SetSpeeds(0, 0);
 
     counter1 = 0;
     counter2 = 0;
@@ -180,7 +201,7 @@ if(experimental){
 }
 
 // Set speed for motor 1, speed is a number betwenn -255 and 255
-void DriverDkv::setM1Speed(int speed)
+void DriverDkv::SetM1Speed(int speed)
 {
   unsigned char reverse = 0;
 
@@ -211,7 +232,7 @@ void DriverDkv::setM1Speed(int speed)
 }
 
 // Set speed for motor 2, speed is a number betwenn -255 and 255
-void DriverDkv::setM2Speed(int speed)
+void DriverDkv::SetM2Speed(int speed)
 {
   unsigned char reverse = 0;
 
@@ -240,7 +261,7 @@ void DriverDkv::setM2Speed(int speed)
 }
 
 // Set speed for motor 1 and 2
-void DriverDkv::setSpeeds(int m1Speed, int m2Speed)
+void DriverDkv::SetSpeeds(int m1Speed, int m2Speed)
 {
     if (M1) {
         m1Speed = m1Speed / k;
@@ -249,6 +270,91 @@ void DriverDkv::setSpeeds(int m1Speed, int m2Speed)
         m1Speed = m1Speed / k;
     }
 
-    setM1Speed(m1Speed);
-    setM2Speed(m2Speed);
+    SetM1Speed(m1Speed);
+    SetM2Speed(m2Speed);
+}
+
+
+
+// Set speed for motor 1, speed is a number betwenn -255 and 255
+void DriverDkv::SmoothSetM1Speed(int speed)
+{
+    int Speed1 = 0;
+    float Speed1Smoothed;
+    float Speed1Prev;;
+
+    while (Speed1 < speed) {
+        Speed1 = Speed1 * 100;
+        Speed1Smoothed = (Speed1 * 0.05) + (Speed1Prev * 0.95);
+        Speed1Prev = Speed1Smoothed;
+        SetM1Speed(Speed1Smoothed);
+    }
+}
+
+// Set speed for motor 2, speed is a number betwenn -255 and 255
+void DriverDkv::SmoothSetM2Speed(int speed)
+{
+    int Speed1 = 0;
+    float Speed1Smoothed;
+    float Speed1Prev;;
+
+    while (Speed1 < speed) {
+        Speed1 = Speed1 * 100;
+        Speed1Smoothed = (Speed1 * 0.05) + (Speed1Prev * 0.95);
+        Speed1Prev = Speed1Smoothed;
+        SetM2Speed(Speed1Smoothed);
+    }
+}
+
+// Set speed for motor 1 and 2
+void DriverDkv::SmoothSetSpeeds(int m1Speed, int m2Speed)
+{
+    if (M1) {
+        m1Speed = m1Speed / k;
+    }
+    else {
+        m1Speed = m1Speed / k;
+    }
+
+    int Speed1 = 0;
+    float Speed1Smoothed;
+    float Speed1Prev;
+
+    int Speed2 = 0;
+    float Speed2Smoothed;
+    float Speed2Prev;
+
+    while (Speed1 < m1Speed && Speed2 < m2Speed) {
+
+        if (M1) {
+            if (Speed1 < m1Speed) {
+                Speed1 = Speed1 * 100;
+                Speed1Smoothed = (Speed1 * 0.05) + (Speed1Prev * 0.95);
+                Speed1Prev = Speed1Smoothed;
+                SetM1Speed(Speed1Smoothed / k);
+            }
+
+            if (Speed2 < m2Speed) {
+                Speed1 = Speed1 * 100;
+                Speed1Smoothed = (Speed1 * 0.05) + (Speed1Prev * 0.95);
+                Speed1Prev = Speed1Smoothed;
+                SetM2Speed(Speed1Smoothed);
+            }
+        }
+        else {
+            if (Speed1 < m1Speed) {
+                Speed1 = Speed1 * 100;
+                Speed1Smoothed = (Speed1 * 0.05) + (Speed1Prev * 0.95);
+                Speed1Prev = Speed1Smoothed;
+                SetM1Speed(Speed1Smoothed);
+            }
+
+            if (Speed2 < m2Speed) {
+                Speed1 = Speed1 * 100;
+                Speed1Smoothed = (Speed1 * 0.05) + (Speed1Prev * 0.95);
+                Speed1Prev = Speed1Smoothed;
+                SetM2Speed(Speed1Smoothed / k);
+            }
+        }
+    }
 }

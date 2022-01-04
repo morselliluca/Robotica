@@ -44,8 +44,8 @@
 
 //Dischiarazioni oggetti
 
-  DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8, 29, 30, 31, 32, 42, 90, 210); 
-DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15, 33, 34, 35, 36, 42, 90, 210); 
+  DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8, 29, 30, 31, 32, 42, 90, 182, 30); 
+DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15, 33, 34, 35, 36, 42, 90, 182, 30); 
 File myFile; //dichiarazione file
 
 //dichiarazione LCD

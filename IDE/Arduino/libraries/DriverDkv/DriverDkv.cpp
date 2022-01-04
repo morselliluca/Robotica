@@ -3,10 +3,15 @@
 int k = 1;
 int counter1 = 0;
 int counter2 = 0;
+int counter = 0;
 
 float _DIAM = 0;
 float _LARG = 0;
 float _ROT = 0;
+
+double basespeed = 0;
+double speedprev = 0;
+double speedsmooth = 0;
 
 bool M1 = false;
 bool experimental = true;
@@ -47,7 +52,9 @@ DriverDkv::DriverDkv(unsigned char INA1,
                      unsigned char ENB2,
                      unsigned char ROT,
                      unsigned char DIAM,
-                     unsigned char LARG){
+                     unsigned char LARG,
+                     unsigned char BASESPEED
+                                    ){
   _INA1 = INA1;
   _INB1 = INB1;
   _PWM1 = PWM1;
@@ -63,6 +70,7 @@ DriverDkv::DriverDkv(unsigned char INA1,
   _ROT = ROT;
   _DIAM = DIAM;
   _LARG = LARG;
+  basespeed = BASESPEED;
 
   pinMode(_INA1,OUTPUT);
   pinMode(_INB1,OUTPUT);
@@ -104,6 +112,14 @@ if(experimental){
     counter1 = 0;
     counter2 = 0;
 
+    while (speedsmooth < 255) {
+        speedsmooth = (speedprev * 0.05) + speedprev;
+        speedprev = speedsmooth;
+        counter += 1;
+    }
+    speedprev = 10;
+    speedsmooth = 0;
+
     return k;
 }
 }
@@ -115,15 +131,28 @@ if(experimental){
     double media = 0;
 
     while (media < distance) {
-
-        SmoothSetSpeeds(Speed, Speed);
-
+        if (media < (counter - 1) && media < distance / 2) {
+            speedsmooth = (speedprev * 0.05) + speedprev;
+            speedprev = speedsmooth;
+            SetSpeeds(speedsmooth, speedsmooth);
+        }
+        else if ((cicli - media) < counter && media >= distance / 2) {
+            speedsmooth = speedprev - (speedprev * 0.05);
+            speedprev = speedsmooth;
+            SetSpeeds(speedsmooth, speedsmooth);
+        }
+        else {
+            SetSpeeds(255, 255);
+        }
         counter1 = readencoder(_ENA1, _ENB1, counter1); //read encoder 1
         counter2 = readencoder(_ENA2, _ENB2, counter2); //read encoder 2
         counter1 = abs(counter1);
         counter2 = abs(counter2);
         media = media + ((counter1 + counter2) / 2);
+        delay(1);
     }
+    speedprev = basespeed;
+    speedsmooth = 0;
 
     SetSpeeds(0, 0);
 
@@ -132,7 +161,7 @@ if(experimental){
 }
 }
 
-void DriverDkv::Turn(int Speed, int angolo)
+void DriverDkv::Turn(int angolo)
 {
 if(experimental){
     bool dir;
@@ -145,39 +174,50 @@ if(experimental){
     double rotation = _LARG / ((angolo / 360) * _DIAM) * _ROT;
     double media = 0;
 
-
     while (media < rotation) {
-
-
-        if (dir) {
-            SmoothSetSpeeds(Speed, (Speed * -1));
-        } 
-        else {
-            SmoothSetSpeeds((Speed * -1), Speed);
+        if (media < (counter - 1) && media < rotation / 2) {
+            speedsmooth = (speedprev * 0.05) + speedprev;
+            speedprev = speedsmooth;
+            if (dir) {
+                SetSpeeds(speedsmooth, (speedsmooth * -1));
+            }
+            else {
+                SetSpeeds((speedsmooth * -1), speedsmooth);
+            }
         }
-
+        else if ((cicli - media) < counter && media >= rotation / 2) {
+            speedsmooth = speedprev - (speedprev * 0.05);
+            speedprev = speedsmooth;
+            if (dir) {
+                SetSpeeds(speedsmooth, (speedsmooth * -1));
+            }
+            else {
+                SetSpeeds((speedsmooth * -1), speedsmooth);
+            }
+        }
+        else {
+            if (dir) {
+                SetSpeeds(255, (255 * -1));
+            }
+            else {
+                SetSpeeds((255 * -1), 255);
+            }
+        }
         counter1 = readencoder(_ENA1, _ENB1, counter1); //read encoder 1
         counter2 = readencoder(_ENA2, _ENB2, counter2); //read encoder 2
         counter1 = abs(counter1);
         counter2 = abs(counter2);
         media = media + ((counter1 + counter2) / 2);
+        delay(1);
     }
+    speedprev = basespeed;
+    speedsmooth = 0;
 
     SetSpeeds(0, 0);
 
     counter1 = 0;
     counter2 = 0;
 }
-}
-
-void DriverDkv::MoveAuto(int mm)
-{
-    int a = sin(10);
-}
-
-void DriverDkv::TurnAuto(int gradi)
-{
-    int a = sin(10);
 }
 
 int DriverDkv::readencoder(int inputDT, int inputCLK, int counter) {

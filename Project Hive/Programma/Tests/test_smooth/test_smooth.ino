@@ -2,7 +2,7 @@ double speedsmooth;
 double speedprev = 10;
 int media = 0;
 int counter = 0;
-int cicli = 700;
+int cicli = 300;
 
 void setup() {
   Serial.begin(9600);

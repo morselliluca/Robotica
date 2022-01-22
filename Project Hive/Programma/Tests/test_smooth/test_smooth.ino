@@ -19,7 +19,7 @@ void setup() {
         speedsmooth = (speedprev * 0.05) + speedprev;
         speedprev = speedsmooth;
         Serial.println(speedsmooth);
-    } else if((cicli-media)<counter && media>=cicli/2){
+    } else if(media > counter && media>=cicli/2){
         speedsmooth = speedprev - (speedprev * 0.05);
         speedprev = speedsmooth;
         Serial.println(speedsmooth);

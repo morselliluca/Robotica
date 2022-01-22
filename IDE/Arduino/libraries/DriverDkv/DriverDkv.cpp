@@ -136,7 +136,7 @@ if(experimental){
             speedprev = speedsmooth;
             SetSpeeds(speedsmooth, speedsmooth);
         }
-        else if ((cicli - media) < counter && media >= distance / 2) {
+        else if (media > counter && media >= distance / 2) {
             speedsmooth = speedprev - (speedprev * 0.05);
             speedprev = speedsmooth;
             SetSpeeds(speedsmooth, speedsmooth);
@@ -185,7 +185,7 @@ if(experimental){
                 SetSpeeds((speedsmooth * -1), speedsmooth);
             }
         }
-        else if ((cicli - media) < counter && media >= rotation / 2) {
+        else if (media > counter && media >= rotation / 2) {
             speedsmooth = speedprev - (speedprev * 0.05);
             speedprev = speedsmooth;
             if (dir) {

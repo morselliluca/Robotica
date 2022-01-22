@@ -30,7 +30,7 @@ class DriverDkv
                unsigned char ENB2,
                unsigned char ROT,
                unsigned char DIAM,
-               unsigned char LARG
+               unsigned char LARG,
                unsigned char BASESPEED);
 
 
@@ -46,7 +46,7 @@ class DriverDkv
     void SmoothSetM2Speed(int speed); // Set speed for M2.
     void SmoothSetSpeeds(int m1Speed, int m2Speed); // Set speed for both M1 and M2.
     //experimental
-    void Move(int mm); 
+    void Move(int speed, int mm); 
     void Turn(int angolo);
 
 

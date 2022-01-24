@@ -42,8 +42,8 @@
 
 //Dischiarazioni oggetti
 
-DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8); 
-DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15); 
+DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8, 29, 30, 31, 32, 42, 90, 182, 30); 
+DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15, 33, 34, 35, 36, 42, 90, 182, 30); 
 Adafruit_MLX90614 mlx;
 File myFile; //dichiarazione file
 
@@ -59,6 +59,10 @@ int sound = 2000; //suono
 
 bool ctrl = true;
 
+String input;
+String speedL;
+String speedR;
+String cubi;
 //Variabili che voglio salvare
 
 void setup() {
@@ -86,28 +90,23 @@ void setup() {
    while (!Serial) {
       ; // wait for serial port to connect.
    }
-  
-}
 
-/////Main/////
-
-void loop() {
-  mlx.AddrSet(IR1); 
+     mlx.AddrSet(IR1); 
   Serial.print("IR1: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
-  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
   mlx.temp1 = mlx.readObjectTempF();
   delay(250);
   mlx.AddrSet(IR2); 
   Serial.print("IR2: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
-  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
   mlx.temp2 = mlx.readObjectTempF();
   delay(250);
   mlx.AddrSet(IR3); 
   Serial.print("IR3: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
-  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
   mlx.temp3 = mlx.readObjectTempF();
   delay(250);
   Serial.println("Reflection 1: ");
@@ -129,14 +128,63 @@ void loop() {
   digitalWrite(morto2_led, LOW);
   digitalWrite(morto3_led, LOW);
   delay(250);
-  Driver1.setSpeed(200, 200);
-  Driver2.setSpeed(200, 200);
+  Driver1.SetSpeeds(200, 200);
+  Driver2.SetSpeeds(200, 200);
   delay(250);
-  Driver1.setSpeed(0, 0);
-  Driver2.setSpeed(0, 0);
+  Driver1.SetSpeeds(0, 0);
+  Driver2.SetSpeeds(0, 0);
   while(!digitalRead(startsw)){
     Serial.println("Redy to start");
     delay(1500);
   }
+
+Serial.println(Driver1.Setup());
+Serial.println(Driver2.Setup());
+  
+}
+
+/////Main/////
+
+void loop() {
+
+//input 
+    //L:100,R:100,0
+        //100 sono valori di velocita
+        //0 rappresenta i cubi da 1 a x che puo buttare giu
+    //STOP
+        //dopo aver mandato lo stop la teensy si blocca e aspetta uno stop di AK dalla raspby
+    //START
+        //dopo aver mandato lo start la teensy si blocca e aspetta uno start di AK dalla raspby
+    
+//output 
+    //L:0,F:1,R:0,B:
+        //i 3 sensori di calore 0=freddo 1=caldo
+        //la B e il nero sotto puo essere 0 nulla 1 nero 2 checkpoint, il checkpoin piu recente e quello che riparti se ti incricchi
+    //STOP
+        //lo mando quando spegno con lo switch per dire mi sono incriccato
+    //START
+        //partenza
+
+input = Serial.read();
+gfx -> println(input);
+Serial.flush();
+
+speedL = input[2] + input[3] + input[4];
+speedR = input[8] + input[9] + input[10];
+cubi = input[12];
+
+Driver1.SetSpeeds(speedL.toInt(), speedR.toInt());
+Driver2.SetSpeeds(speedL.toInt(), speedR.toInt());
+
+for(int i = 0; i < cubi.toInt(); i++){
+  //cagailcubo
+}
+
+/*
+Serial.println(speedL);
+Serial.println(speedR);
+Serial.println(cubi);
+*/
+
 
 }

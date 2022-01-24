@@ -1,39 +1,80 @@
 # Robotica
 
-come parla la raspby con la teensy
+Come parla la raspby con la teensy
 
-//input: 
+Input: 
 
-    //L:100,R:100,0
+	//L:100,R:100,0
 		
-        //100 sono valori di velocita
+		//100 Speed Values
 				
-        //0 rappresenta i cubi da 1 a x che puo buttare giu
+		//0 N of cubes to drop
 				
-    //STOP
+	//STOP
 		
-        //dopo aver mandato lo stop la teensy si blocca e aspetta uno stop di AK dalla raspby
+		//After Teensy Sends Stop Command it waits for AK from the Raspby
 				
-    //START
+	//START
 		
-        //dopo aver mandato lo start la teensy si blocca e aspetta uno start di AK dalla raspby
+		//After Teensy Sends Start Command it waits for AK from the Raspby
 				
     
-//output:
+Output:
 
-    //L:0,F:1,R:0,B:
+	//L:0,F:1,R:0,B:
 		
-        //i 3 sensori di calore 0=freddo 1=caldo
+		//3 Temp sensor 1=Hot 0=Cold
 				
-        //la B e il nero sotto puo essere 0 nulla 1 nero 2 checkpoint, il checkpoin piu recente e quello che riparti se ti incricchi
+		//B is the color of the Tile 0=white 1=black 2=chechpoint, use last checkpoint as the current reset position
 				
-    //STOP
+	//STOP
 		
-        //lo mando quando spegno con lo switch per dire mi sono incriccato
+		//When i want to Stop
 				
-    //START
+	//START
 		
-        //partenza
+		//I want to start
 				
 
-se cercate la libreria per i driver pololu che vada bene andate alla directory: Robotica/IDE/Arduino/libraries/DriverDkv/
+To find the Modified pololu Library: Robotica/IDE/Arduino/libraries/DriverDkv/
+
+Commands:
+
+	//Constructors:
+
+		//DriverDkv(unsigned char INA1, unsigned char INB1, unsigned char PWM1, unsigned char INA2, unsigned char INB2, unsigned char PWM2);
+			//Use onlu basic Functions:
+						//void SetM1Speed(int speed); 
+							// Set speed for M1.
+    						//void SetM2Speed(int speed); 
+							// Set speed for M2.
+    						//void SetSpeeds(int m1Speed, int m2Speed);
+							// Set speed for both M1 and M2.
+
+		//DriverDkv(unsigned char INA1, unsigned char INB1, unsigned char PWM1, unsigned char INA2, unsigned char INB2, unsigned char PWM2, unsigned char ENA1, unsigned char ENB1, unsigned char ENA2, unsigned char ENB2, unsigned char ROT, unsigned char DIAM, unsigned char LARG, unsigned char BASESPEED);
+			//use both normal and advanced Funcions:
+								//int Setup(); 
+									//necessary to run for advanced functions
+    								//int readencoder(int inputDT, int inputCLK, int counter); 
+									//Retrun the number of turn from encoder (put in a while loop);
+								
+								//void SetM1Speed(int speed); 
+									// Set speed for M1.
+								//void SetM2Speed(int speed); 
+									// Set speed for M2.
+								//void SetSpeeds(int m1Speed, int m2Speed); 
+									// Set speed for both M1 and M2.
+								
+								//void SmoothSetM1Speed(int speed); 
+									// Set speed for M1 by increasing it slowly
+								//void SmoothSetM2Speed(int speed); 
+									// Set speed for M2 by increasing it slowly
+								//void SmoothSetSpeeds(int m1Speed, int m2Speed); 
+									// Set speed for both M1 and M2 by increasing it slowly
+								
+								//void Move(int speed, int mm); 
+									//move forward a set amount of mm
+								//void Turn(int angolo);
+									//turn a certain amount of degrees
+
+

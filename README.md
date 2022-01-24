@@ -1,6 +1,6 @@
 # Robotica
 
-Come parla la raspby con la teensy
+From Teensy POV
 
 Input: 
 
@@ -36,7 +36,7 @@ Output:
 		//I want to start
 				
 
-To find the Modified pololu Library: Robotica/IDE/Arduino/libraries/DriverDkv/
+To find the Modified pololu Library: Robotica/Arduino/libraries/DriverDkv/
 
 Commands:
 

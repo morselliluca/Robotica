@@ -1,3 +1,4 @@
+/*
 #include <SD.h>
 #include <SPI.h>
 #include <Wire.h>
@@ -12,13 +13,13 @@
 
 #define reflection1D 11 //riflesso digitale 1
 #define reflection2D 12 //riflesso digitale 2
+*/
+#define morto1_led 28 //morto1
+#define morto2_led 16 //morto2
+#define morto3_led 17 //morto3
 
-#define morto1_led 20 //morto1
-#define morto2_led 38 //morto2
-#define morto3_led 39 //morto3
-
-#define serial_led 7 //serial led
-#define start_led 8 //start led
+#define serial_led 5 //serial led
+#define start_led 6 //start led
 
 #define startsw 37 //start switch
 
@@ -41,9 +42,9 @@
 #define IR3 0x5B //indirizzo ir destra
 
 //Dischiarazioni oggetti
-
-DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8, 29, 30, 31, 32, 42, 90, 182, 30); 
-DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15, 33, 34, 35, 36, 42, 90, 182, 30); 
+/*
+DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8); 
+DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15); 
 Adafruit_MLX90614 mlx;
 File myFile; //dichiarazione file
 
@@ -64,9 +65,11 @@ String speedL;
 String speedR;
 String cubi;
 //Variabili che voglio salvare
-
+*/
 void setup() {
-
+ Serial.begin(9600);
+  
+/*
    mlx.begin(); 
    //Start screen
    gfx -> begin(); 
@@ -115,38 +118,41 @@ void setup() {
   Serial.println(analogRead(reflection1A));
   delay(250);
   gfx -> println("Ciao");
-  delay(250);
-  digitalWrite(start_led, HIGH);
-  digitalWrite(serial_led, HIGH);
-  digitalWrite(morto1_led, HIGH);
-  digitalWrite(morto2_led, HIGH);
-  digitalWrite(morto3_led, HIGH);
-  delay(250);
-  digitalWrite(start_led, LOW);
-  digitalWrite(serial_led, LOW);
-  digitalWrite(morto1_led, LOW);
-  digitalWrite(morto2_led, LOW);
-  digitalWrite(morto3_led, LOW);
-  delay(250);
-  Driver1.SetSpeeds(200, 200);
-  Driver2.SetSpeeds(200, 200);
-  delay(250);
-  Driver1.SetSpeeds(0, 0);
-  Driver2.SetSpeeds(0, 0);
-  while(!digitalRead(startsw)){
-    Serial.println("Redy to start");
-    delay(1500);
-  }
-
-Serial.println(Driver1.Setup());
-Serial.println(Driver2.Setup());
+  */
+pinMode(37, INPUT);
   
 }
 
 /////Main/////
 
 void loop() {
+  
+  digitalWrite(start_led, HIGH);
+  delay(50);
+  digitalWrite(serial_led, HIGH);
+  delay(50);
+  digitalWrite(morto1_led, HIGH);
+  delay(50);
+  digitalWrite(morto2_led, HIGH);
+  delay(50);
+  digitalWrite(morto3_led, HIGH);
+  delay(50);
+  digitalWrite(start_led, LOW);
+  delay(50);
+  digitalWrite(serial_led, LOW);
+  delay(50);
+  digitalWrite(morto1_led, LOW);
+  delay(50);
+  digitalWrite(morto2_led, LOW);
+  delay(50);
+  digitalWrite(morto3_led, LOW);
+  delay(50);
 
+  Serial.println(digitalRead(37));
+  
+  /*
+  Driver1.setSpeeds(200, 200);
+  Driver2.setSpeeds(200, 200);
 //input 
     //L:100,R:100,0
         //100 sono valori di velocita
@@ -180,7 +186,7 @@ for(int i = 0; i < cubi.toInt(); i++){
   //cagailcubo
 }
 
-/*
+
 Serial.println(speedL);
 Serial.println(speedR);
 Serial.println(cubi);

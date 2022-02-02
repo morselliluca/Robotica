@@ -1,8 +1,13 @@
 #include <SD.h>
+
 #include <SPI.h>
+
 #include <Wire.h>
+
 #include <Arduino_GFX_Library.h>
+
 #include <DriverDkv.h>
+
 #include <Adafruit_MLX90614.h>
 
 //Costanti
@@ -25,14 +30,14 @@
 #define buzzer 26 //buzzer
 
 // Color definitions
-#define BLACK    0x0000
-#define BLUE     0x001F
-#define RED      0xF800
-#define GREEN    0x07E0
-#define CYAN     0x07FF
-#define MAGENTA  0xF81F
-#define YELLOW   0xFFE0 
-#define WHITE    0xFFFF
+#define BLACK 0x0000
+#define BLUE 0x001F
+#define RED 0xF800
+#define GREEN 0x07E0
+#define CYAN 0x07FF
+#define MAGENTA 0xF81F
+#define YELLOW 0xFFE0
+#define WHITE 0xFFFF
 
 //indirizzi I2C
 
@@ -42,8 +47,8 @@
 
 //Dischiarazioni oggetti
 
-DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8); 
-DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15); 
+DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
+DriverDkv Driver2 = DriverDkv(22, 21, 23, 14, 13, 15);
 Adafruit_MLX90614 mlx;
 File myFile; //dichiarazione file
 
@@ -56,8 +61,7 @@ Arduino_GFX * gfx = new Arduino_ILI9341(bus, TFT_RST, 0, false);
 #endif
 
 int sound = 2000; //suono 
-
-bool ctrl = true;
+int reflection = 0; //rifelsso medio
 
 String input;
 String speedL;
@@ -65,127 +69,150 @@ String speedR;
 String cubi;
 
 void setup() {
- Serial.begin(9600);
-  
+    Serial.begin(9600);
 
-   mlx.begin(); 
-   //Start screen
-   gfx -> begin(); 
-   gfx -> fillScreen(BLACK); //fill color black
-   gfx -> setCursor(0, 0);
-   gfx -> setTextColor(GREEN);
-   gfx -> setTextSize(1);
+    mlx.begin();
+    //Start screen
+    gfx -> begin();
+    gfx -> fillScreen(BLACK); //fill color black
+    gfx -> setCursor(0, 0);
+    gfx -> setTextColor(GREEN);
+    gfx -> setTextSize(1);
 
-   //PinModes
-   pinMode(buzzer, OUTPUT);
-   pinMode(startsw, INPUT);
+    //PinModes
+    pinMode(buzzer, OUTPUT);
+    pinMode(startsw, INPUT);
 
-   analogWriteFrequency(2, 375000);
-   analogWriteFrequency(8, 375000);
-   analogWriteFrequency(23, 375000);
-   analogWriteFrequency(15, 375000);
-   
-   analogWriteResolution(8);
+    analogWriteFrequency(2, 375000);
+    analogWriteFrequency(8, 375000);
+    analogWriteFrequency(23, 375000);
+    analogWriteFrequency(15, 375000);
 
-   //Serial Check
-   Serial.begin(9600);
-   while (!Serial) {
-      ; // wait for serial port to connect.
-   }
+    analogWriteResolution(8);
 
-     mlx.AddrSet(IR1); 
-  Serial.print("IR1: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
-  mlx.temp1 = mlx.readObjectTempF();
-  delay(250);
-  mlx.AddrSet(IR2); 
-  Serial.print("IR2: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
-  mlx.temp2 = mlx.readObjectTempF();
-  delay(250);
-  mlx.AddrSet(IR3); 
-  Serial.print("IR3: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
-  mlx.temp3 = mlx.readObjectTempF();
-  delay(250);
-  Serial.println("Reflection 1: ");
-  Serial.println(analogRead(reflection2A));
-  Serial.println("Reflection 2: ");
-  Serial.println(analogRead(reflection1A));
-  delay(250);
-  gfx -> println("Ciao");
-  while(!digitalRead(startsw)){
-    println("redy to start");
-    delay(1000);
-  }
-  println("start"); 
+    //Serial Check
+    Serial.begin(9600);
+    while (!Serial) {
+        ; // wait for serial port to connect.
+    }
+    digitalWrite(serial_led, HIGH);
+
+    mlx.AddrSet(IR1);
+    Serial.print("IR1: ");
+    Serial.print("Ambient = ");
+    Serial.print(mlx.readAmbientTempC());
+    Serial.print("*C\tObject = ");
+    Serial.print(mlx.readObjectTempC());
+    Serial.println("*C");
+    mlx.temp1 = mlx.readObjectTempF();
+    delay(250);
+    mlx.AddrSet(IR2);
+    Serial.print("IR2: ");
+    Serial.print("Ambient = ");
+    Serial.print(mlx.readAmbientTempC());
+    Serial.print("*C\tObject = ");
+    Serial.print(mlx.readObjectTempC());
+    Serial.println("*C");
+    mlx.temp2 = mlx.readObjectTempF();
+    delay(250);
+    mlx.AddrSet(IR3);
+    Serial.print("IR3: ");
+    Serial.print("Ambient = ");
+    Serial.print(mlx.readAmbientTempC());
+    Serial.print("*C\tObject = ");
+    Serial.print(mlx.readObjectTempC());
+    Serial.println("*C");
+    mlx.temp3 = mlx.readObjectTempF();
+    delay(250);
+    Serial.println("Reflection 1: ");
+    Serial.println(analogRead(reflection2A));
+    Serial.println("Reflection 2: ");
+    Serial.println(analogRead(reflection1A));
+    reflection = (analogRead(reflection2A) + analogRead(reflection1A)) / 2;
+    delay(250);
+    gfx -> println("Ciao");
+    while (!digitalRead(startsw)) {
+        println("redy to start");
+        delay(1000);
+    }
+    println("start");
+
+    input = Serial.read();
+    while (input != "start") {
+        input = Serial.read();
+        println("start");
+        delay(1000);
+    }
 }
 
 /////Main/////
 
 void loop() {
-  
-  digitalWrite(start_led, HIGH);
-  delay(30);
-  digitalWrite(serial_led, HIGH);
-  delay(30);
-  digitalWrite(morto1_led, HIGH);
-  delay(30);
-  digitalWrite(morto2_led, HIGH);
-  delay(30);
-  digitalWrite(morto3_led, HIGH);
-  delay(30);
-  digitalWrite(start_led, LOW);
-  delay(30);
-  digitalWrite(serial_led, LOW);
-  delay(30);
-  digitalWrite(morto1_led, LOW);
-  delay(30);
-  digitalWrite(morto2_led, LOW);
-  delay(30);
-  digitalWrite(morto3_led, LOW);
-  delay(30);
-//input 
-    //L:100,R:100,0
+    while(digitalRead(startsw)) {
+        digitalWrite(start_led, HIGH);
+        //input 
+        //L:100,R:100,0
         //100 sono valori di velocita
         //0 rappresenta i cubi da 1 a x che puo buttare giu
-    //STOP
+        //STOP
         //dopo aver mandato lo stop la teensy si blocca e aspetta uno stop di AK dalla raspby
-    //START
+        //START
         //dopo aver mandato lo start la teensy si blocca e aspetta uno start di AK dalla raspby
-    
-//output 
-    //L:0,F:1,R:0,B:
+
+        //output 
+        //L:0,F:1,R:0,B:
         //i 3 sensori di calore 0=freddo 1=caldo
         //la B e il nero sotto puo essere 0 nulla 1 nero 2 checkpoint, il checkpoin piu recente e quello che riparti se ti incricchi
-    //STOP
+        //STOP
         //lo mando quando spegno con lo switch per dire mi sono incriccato
-    //START
+        //START
         //partenza
 
-input = Serial.read();
-gfx -> println(input);
-Serial.flush();
+        input = Serial.read();
+        gfx -> println(input);
+        Serial.flush();
 
-speedL = input[2] + input[3] + input[4];
-speedR = input[8] + input[9] + input[10];
-cubi = input[12];
+        speedL = input[2] + input[3] + input[4];
+        speedR = input[8] + input[9] + input[10];
+        cubi = input[12];
 
-Driver1.SetSpeeds(speedL.toInt(), speedR.toInt());
-Driver2.SetSpeeds(speedL.toInt(), speedR.toInt());
+        Driver1.SetSpeeds(speedL.toInt(), speedR.toInt());
+        Driver2.SetSpeeds(speedL.toInt(), speedR.toInt());
 
-for(int i = 0; i < cubi.toInt(); i++){
-  //cagailcubo
+        for (int i = 0; i < cubi.toInt(); i++) {
+            //cagailcubo
+        }
+
+        Serial.println(speedL);
+        Serial.println(speedR);
+        Serial.println(cubi);
+    }
+    digitalWrite(start_led, LOW);
+    println("stop");
+
 }
 
+void dead() {
+    digitalWrite(morto1_led, HIGH);
+    digitalWrite(morto2_led, HIGH);
+    digitalWrite(morto3_led, HIGH);
+    delay(200);
+    digitalWrite(morto1_led, LOW);
+    digitalWrite(morto2_led, LOW);
+    digitalWrite(morto3_led, LOW);
+}
 
-Serial.println(speedL);
-Serial.println(speedR);
-Serial.println(cubi);
-
-
-
+void bttf() {
+    digitalWrite(morto1_led, HIGH);
+    delay(30);
+    digitalWrite(morto2_led, HIGH);
+    delay(30);
+    digitalWrite(morto3_led, HIGH);
+    delay(30);
+    digitalWrite(morto1_led, LOW);
+    delay(30);
+    digitalWrite(morto2_led, LOW);
+    delay(30);
+    digitalWrite(morto3_led, LOW);
+    delay(30);
 }

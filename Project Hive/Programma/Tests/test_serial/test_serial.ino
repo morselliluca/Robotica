@@ -16,5 +16,6 @@ void loop() {
         Serial.println(speedL);
         Serial.println(speedR);
         Serial.println(cubi);
-        Serial.println(input);
+        
+        Serial.println(Serial.dtr());
 }

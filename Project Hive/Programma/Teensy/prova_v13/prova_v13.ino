@@ -35,9 +35,7 @@
 #define WHITE 0xFFFF
 
 //indirizzi I2C
-#define IR1 0x5C //indirizzo ir davanti
-#define IR2 0x5A //indirizzo ir sinistra
-#define IR3 0x5B //indirizzo ir destra
+uint8_t IR[3] = {0x5C , 0x5A , 0x5B};
 
 //Dischiarazioni oggetti
 DriverDkv Driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
@@ -54,6 +52,8 @@ String input;
 String speedL;
 String speedR;
 String cubi;
+
+bool caldo = false;
 
 
 void setup() {
@@ -81,98 +81,20 @@ void setup() {
     }
     
 
-    mlx.AddrSet(IR1);
-    Serial.print("IR1: ");
-    Serial.print("Ambient = ");
-    Serial.print(mlx.readAmbientTempC());
-    Serial.print("*C\tObject = ");
-    Serial.print(mlx.readObjectTempC());
-    Serial.println("*C");
-    mlx.temp1 = mlx.readObjectTempF();
-    delay(250);
-    mlx.AddrSet(IR2);
-    Serial.print("IR2: ");
-    Serial.print("Ambient = ");
-    Serial.print(mlx.readAmbientTempC());
-    Serial.print("*C\tObject = ");
-    Serial.print(mlx.readObjectTempC());
-    Serial.println("*C");
-    mlx.temp2 = mlx.readObjectTempF();
-    delay(250);
-    mlx.AddrSet(IR3);
-    Serial.print("IR3: ");
-    Serial.print("Ambient = ");
-    Serial.print(mlx.readAmbientTempC());
-    Serial.print("*C\tObject = ");
-    Serial.print(mlx.readObjectTempC());
-    Serial.println("*C");
-    mlx.temp3 = mlx.readObjectTempF();
-    delay(250);
-    
-    Serial.println("Reflection 1: ");
-    Serial.println(analogRead(reflection2A));
-    Serial.println("Reflection 2: ");
-    Serial.println(analogRead(reflection1A));
-    reflection = (analogRead(reflection2A) + " " + analogRead(reflection1A)) / 2;
-    delay(250);
-    
-    while (!digitalRead(startsw)) {
-        Serial.println("redy to start");
-        delay(1000);
-    }
-    Serial.println("start");
-
-    input = Serial.read();
-    while (input != "start") {
-        input = Serial.read();
-    }
-
 }
 
 /////Main/////
 
 void loop() {
-    while(digitalRead(startsw)) {
-        digitalWrite(start_led, HIGH);
-        //input 
-        //L:100,R:100,0
-        //100 sono valori di velocita
-        //0 rappresenta i cubi da 1 a x che puo buttare giu
-        //STOP
-        //dopo aver mandato lo stop la teensy si blocca e aspetta uno stop di AK dalla raspby
-        //START
-        //dopo aver mandato lo start la teensy si blocca e aspetta uno start di AK dalla raspby
-
-        //output 
-        //L:0,F:1,R:0,B:
-        //i 3 sensori di calore 0=freddo 1=caldo
-        //la B e il nero sotto puo essere 0 nulla 1 nero 2 checkpoint, il checkpoin piu recente e quello che riparti se ti incricchi
-        //STOP
-        //lo mando quando spegno con lo switch per dire mi sono incriccato
-        //START
-        //partenza
-
-        input = Serial.read();
-        Serial.flush();
-
-        speedL = input[2] + input[3] + input[4];
-        speedR = input[8] + input[9] + input[10];
-        cubi = input[12];
-
-        Driver1.setSpeeds(speedL.toInt(), speedR.toInt());
-        Driver2.setSpeeds(speedL.toInt(), speedR.toInt());
-
-        for (int i = 0; i < cubi.toInt(); i++) {
-            //cagailcubo
-        }
-
-        Serial.println(speedL);
-        Serial.println(speedR);
-        Serial.println(cubi);
+  for(int i = 0; i < 3; i++){
+    mlx.AddrSet(IR[i]);
+      if((mlx.readObjectTempC() - mlx.readAmbientTempC()) > 5 && !caldo){
+      Serial.print("caldo in");Serial.println(IR[i]);
+      caldo = true;
+      dead();
     }
-    digitalWrite(start_led, LOW);
-    Serial.println("stop");
-
+  }
+  
 }
 
 void dead() {

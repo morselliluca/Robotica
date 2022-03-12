@@ -68,7 +68,13 @@ void setup()
 void loop()
 {
 
-  Serial.println(counter1);
+  Serial.print(counter1);
+  Serial.print(";");
+  Serial.print(counter2);
+  Serial.print(";");
+  Serial.print(counter3);
+  Serial.print(";");
+  Serial.println(counter4);
   encoder();
   delay(1);
   

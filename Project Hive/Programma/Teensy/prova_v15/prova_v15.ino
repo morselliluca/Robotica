@@ -10,9 +10,11 @@
 #include <Wire.h>
 
 ros::NodeHandle nh;
-
+std_msgs::String str_msg;
 geometry_msgs::TransformStamped t;
 tf::TransformBroadcaster broadcaster;
+ros::Publisher nero("nero", &str_msg);
+ros::Publisher calore("calore", &str_msg);
 
 #define outputA1 29
 #define outputB1 30
@@ -69,6 +71,8 @@ signed int tempR;
 
 char base_link[] = "/base_link";
 char odom[] = "/odom";
+char nero[] = "0";
+char calore[] = "0";
 
 float dL; // Dl = 2*PI*R*(lefttick/totaltick)
 float dR; // Dr = 2*PI*R*(righttick/totaltick)
@@ -100,6 +104,7 @@ void setup() {
     aLastState4 = digitalRead(outputA4);
     nh.initNode(); // Initializing node handler
     broadcaster.init(nh); // odom data broadcaster init
+    nh.advertise(chatter);
 
    analogWriteFrequency(2, 375000);
    analogWriteFrequency(8, 375000);
@@ -113,6 +118,10 @@ void setup() {
 
 void loop() {
     encoder();
+    checkcalore(); //da fare
+    checknero(); //da fare
+    // roba che ricevo
+    
     dcountL = counterL - dcountL;
     dcountR = counterR - dcountR;
 
@@ -140,6 +149,10 @@ void loop() {
     t.header.stamp = nh.now();
 
     broadcaster.sendTransform(t); // broadcasting updated result 
+    str_msg.data = nero;
+    nero.publish( &str_msg );
+    str_msg.data = calore;
+    calore.publish( &str_msg );
     nh.spinOnce();
 
     dcountL = templ;

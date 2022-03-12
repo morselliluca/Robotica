@@ -5,6 +5,7 @@ Tutta la roba ddi robotica del Gruppo DKV Lab
 Potete prendere tutto ci che volete e copiare a vostro piacemento
 
 All'interno di 1. lego line troverete (Line):
+
 	/programmi
 		Il codice per la rescue line per un EV3 della lego
 		/programmi/Blocchi
@@ -48,6 +49,7 @@ All'inerno di 2. project manta troverete (Maze):
 
 
 All'inerno di 3. project Hive troverete (Maze):
+
 	/cagacubi
 		le varie versioni del hopper per buttare giu i cubi
 		

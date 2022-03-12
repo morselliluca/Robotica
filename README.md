@@ -17,7 +17,7 @@ All'inerno di 2. project manta troverete (Maze):
 		Un foglio xsl (foglio di calcolo) con tutti i pinout dell'arduino mega, nano e raspberry 
 		
 	/pcb
-		Le Pcb logic e Power usate per il robot
+		Le Pcb logic e Power usate per il robot + i file gerber per ordinarli
 		
 	/programma
 		/programma/arduino
@@ -60,7 +60,7 @@ All'inerno di 3. project Hive troverete (Maze):
 		delle foto del robot renderizzato
 	
 	/pcb 
-		file pdf delle schematiche delle 2 pcb del robot
+		file pdf delle schematiche delle 2 pcb del robot + i file gerber per ordinarli
 	
 	/programma
 		/programma/teensy
@@ -94,8 +94,48 @@ Il grosso dei pezzi e stato acquistato da Aliexpress
 
 Nella lista di Manta ci sono i driver dei motori cinesi NON COMPRATELI si bruciano subito prendete i pololu anche se costano di piu valgono la spesa
 
-Non usate amg8833 come in Manta costano tanto e non e possibile cambiare l'indirizzo i2c nella libreria per leggerli in maniera semplice noi abbiamo usato 2 arduini in piu per questo motvo (i nano), la soluzione migliore e acquistare gli mlx90 
+Non usate amg8833 come in Manta costano tanto e non e possibile cambiare l'indirizzo i2c nella libreria per leggerli in maniera semplice noi abbiamo usato 2 arduini in piu per questo motvo (i nano), la soluzione migliore e acquistare gli mlx90614
 
+Le batterie consiglio Lipo o 18650 almeno una 3s per portare la tensione intorno i 12v () noi usiamo 2 2s in serie
+
+Consiglio di usare ruote e non cingoli
+
+Consiglio motori con encoder tornano utili per contare i giri che ha fatto la ruota
+
+Per collegare raspberry ad arduino o simili usate la seriale e usate direttamente la porta USB poer evitare di bruciarlo in quanto la maggior parte degli arduino sono a 5v e la raspby supporta solo 3.3v
+
+
+Source:
+	Sensori di distanza arduino:
+		https://www.youtube.com/watch?v=6F1B_N6LuKw
+		https://dronebotworkshop.com/hc-sr04-ultrasonic-distance-sensor-arduino/
+	Libreria Pololu vnh5019, la base della libreria custom che troverete in/arduino-1.8.19/libraries/DriverDkv
+		https://github.com/pololu/dual-vnh5019-motor-shield
+	Tutorial per Rosserail da parte della teensy:
+		https://www.youtube.com/watch?v=q1u_cC-5Sac
+		https://www.youtube.com/watch?v=HLLmV9LQoac
+	Ros navigation
+		https://emanual.robotis.com/docs/en/platform/turtlebot3/learn/#books
+		http://wiki.ros.org/ROS/Installation
+		http://wiki.ros.org/catkin/Tutorials/create_a_workspace
+		http://wiki.ros.org/navigation/Tutorials/RobotSetup
+	Mlx90614 come usarle e cambiare indirizzo
+		https://www.instructables.com/Multiple-IR-Temperature-Sensors/
+	Il software per disegnare pcb che consiglio
+		https://easyeda.com/editor
+	Dove ordinare le pcb online
+		https://jlcpcb.com/
+	Dove ho ordinato i pezzi tagliati al laser in alluminio
+		https://www.laserboost.com/en/create
+	Arduino ide (non la 2.0 che non funziona con teensyduino)
+		https://www.arduino.cc/en/software
+	Teensyduino
+		https://www.pjrc.com/teensy/teensyduino.html
+	Software Modellazione 3d (Fusion360 e gratis per gli studenti)
+		https://www.autodesk.com/products/fusion-360/free-trial
+	
+	
+	
 NOTA:
 Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti
 					

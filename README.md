@@ -105,75 +105,53 @@ Consiglio motori con encoder tornano utili per contare i giri che ha fatto la ru
 Per collegare raspberry ad arduino o simili usate la seriale e usate direttamente la porta USB poer evitare di bruciarlo in quanto la maggior parte degli arduino sono a 5v e la raspby supporta solo 3.3v
 
 
-Source:
+Source:<br/>
 
+Sensori di distanza arduino<br/>
+https://www.youtube.com/watch?v=6F1B_N6LuKw<br/>
+https://dronebotworkshop.com/hc-sr04-ultrasonic-distance-sensor-arduino/<br/>
 
-Sensori di distanza arduino
-
-https://www.youtube.com/watch?v=6F1B_N6LuKw
-https://dronebotworkshop.com/hc-sr04-ultrasonic-distance-sensor-arduino/
-
-		
-Libreria Pololu vnh5019, la base della libreria custom che troverete in/arduino-1.8.19/libraries/DriverDkv
-
-https://github.com/pololu/dual-vnh5019-motor-shield
+Libreria Pololu vnh5019, la base della libreria custom che troverete in/arduino-1.8.19/libraries/DriverDkv<br/>
+https://github.com/pololu/dual-vnh5019-motor-shield<br/>
 	
+Tutorial per Rosserail + navigation<br/>
+https://www.youtube.com/watch?v=q1u_cC-5Sac<br/>
+https://www.youtube.com/watch?v=HLLmV9LQoac<br/>
+
+Ros navigation<br/>
+https://emanual.robotis.com/docs/en/platform/turtlebot3/learn/#books<br/>
+http://wiki.ros.org/ROS/Installation<br/>
+http://wiki.ros.org/catkin/Tutorials/create_a_workspace<br/>
+http://wiki.ros.org/navigation/Tutorials/RobotSetup<br/>
+
+		
+Mlx90614 come usarle e cambiare indirizzo<br/>
+https://www.instructables.com/Multiple-IR-Temperature-Sensors/<br/>
 	
-Tutorial per Rosserail da parte della teensy
-
-https://www.youtube.com/watch?v=q1u_cC-5Sac
-https://www.youtube.com/watch?v=HLLmV9LQoac
-
+Il software per disegnare pcb che consiglio<br/>
+https://easyeda.com/editor<br/>
+		
+Dove ordinare le pcb online<br/>
+https://jlcpcb.com/<br/>
+		
+Dove ho ordinato i pezzi tagliati al laser in alluminio<br/>
+https://www.laserboost.com/en/create<br/>
 	
-Ros navigation
-
-https://emanual.robotis.com/docs/en/platform/turtlebot3/learn/#books
-http://wiki.ros.org/ROS/Installation
-http://wiki.ros.org/catkin/Tutorials/create_a_workspace
-http://wiki.ros.org/navigation/Tutorials/RobotSetup
-
+Arduino ide (non la 2.0 che non funziona con teensyduino)<br/>
+https://www.arduino.cc/en/software<br/>
+			
+Teensyduino<br/>
+https://www.pjrc.com/teensy/teensyduino.html<br/>
 		
-Mlx90614 come usarle e cambiare indirizzo
-
-https://www.instructables.com/Multiple-IR-Temperature-Sensors/
-
-		
-Il software per disegnare pcb che consiglio
-
-https://easyeda.com/editor
-
-		
-Dove ordinare le pcb online
-
-https://jlcpcb.com/
-		
-		
-Dove ho ordinato i pezzi tagliati al laser in alluminio
-
-https://www.laserboost.com/en/create
-	
-	
-Arduino ide (non la 2.0 che non funziona con teensyduino)
-
-https://www.arduino.cc/en/software
-		
-		
-Teensyduino
-
-https://www.pjrc.com/teensy/teensyduino.html
-		
-		
-Software Modellazione 3d (Fusion360 e gratis per gli studenti)	
-
-https://www.autodesk.com/products/fusion-360/free-trial
+Software Modellazione 3d (Fusion360 e gratis per gli studenti)<br/>	
+https://www.autodesk.com/products/fusion-360/free-trial<br/>
 
 	
 	
-NOTA:
-Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti
-					
-Siamo felici di aiutarvi per qualunque dubbio o perplessita
+NOTA:<br/>
+Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti<br/>
+Siamo felici di aiutarvi per qualunque dubbio o perplessita<br/>
 
-Luca Morselli:
-+39 3318670782 
-lucamorselli03@gmail.com
+Luca Morselli:<br/>
++39 3318670782 <br/>
+lucamorselli03@gmail.com<br/>

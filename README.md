@@ -79,8 +79,26 @@ All'inerno di 3. project Hive troverete (Maze):
 		
 	Lista.xls
 		la lista dei pezzi che compongono il robot
-		
-			
+
+Faq:
+
+E presente anche una ide di arduino munita di Teensyduino, rosserial e tutte le librerie da noi utilizzate.
+
+Le parti di raspberry degli ultimi 2 progetti mancano e verra aggiunta solo quella dell'ultimo progetto in quanto quella di Manta e stata persa.
+
+I pezzi per il taglio laser sono stati provati principalmente in legno (pippo), plexiglass ed alluminio
+
+I pezzi stampati sono sati stampati solo con stampanti 3d a filamento in quanto della a resina non funzionava (prusa MK.3)
+
+Il grosso dei pezzi e stato acquistato da Aliexpress
+
+Nella lista di Manta ci sono i driver dei motori cinesi NON COMPRATELI si bruciano subito prendete i pololu anche se costano di piu valgono la spesa
+
+Non usate amg8833 come in Manta costano tanto e non e possibile cambiare l'indirizzo i2c nella libreria per leggerli in maniera semplice noi abbiamo usato 2 arduini in piu per questo motvo (i nano), la soluzione migliore e acquistare gli mlx90 
+
+NOTA:
+Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti
+					
 Siamo felici di aiutarvi per qualunque dubbio o perplessita
 
 Luca Morselli:

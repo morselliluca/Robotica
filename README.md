@@ -127,6 +127,8 @@ Quando usate i driver della pololu come MC33926 portate il pin EN -> HIGH e i pi
 I pin INA e INB sono usati per la direzione, vanno messi uno in HIGH uno in LOW 
 
 
+
+
 Source:<br/>
 
 Sensori di distanza arduino<br/>

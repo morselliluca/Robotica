@@ -1,8 +1,26 @@
 # Robotica
 
-Tutta la roba ddi robotica del Gruppo DKV Lab
+Tutti i ptogetti robotica del Gruppo DKV Lab<br/>
+Siamo un gruppo di 2 persone dell'Itis rossi che hanno partecipato alla Robocup per 4 anni consecutivi con questi progetti.<br/>
+il gruppo è formato da:
 
-Potete prendere tutto ci che volete e copiare a vostro piacemento
+	Luca Morselli
+		-Arduino e Teensyduino:
+			-Data collection -> lettura sensori di calore, ultrasuono, riflesso, encoder
+			-Serial and comunication -> comunicazione in seriale tra arduino / teensy e Raspberry
+			-Movement -> libreria e calibrazione driver e motori dc
+		-Pcb design 
+		-Mechanical part design
+		
+	Luca Barban:
+		-On Raspberry:
+			-Opencv -> riconoscimento caratteri e colori
+			-Navigation -> navigazione della mappa
+			-Mapping -> creazione della mappa partendo da ultrasuoni o lidar
+			-Data Collection -> salvare i dati sulla mappa del nero calore lettere ecc.
+			-Serial and comunication -> comunicazione in seriale tra arduino / teensy e Raspberry
+			
+Cosa troverete all'interno di questa repository:
 
 All'interno di 1. lego line troverete (Line):
 

@@ -108,7 +108,7 @@ Per collegare raspberry ad arduino o simili usate la seriale e usate direttament
 Source:
 
 
-Sensori di distanza arduino:
+Sensori di distanza arduino
 
 https://www.youtube.com/watch?v=6F1B_N6LuKw
 https://dronebotworkshop.com/hc-sr04-ultrasonic-distance-sensor-arduino/
@@ -175,7 +175,5 @@ Usare in maniera informativa nessuno di questi progetti e perfetto ma possono es
 Siamo felici di aiutarvi per qualunque dubbio o perplessita
 
 Luca Morselli:
-
 +39 3318670782 
-
 lucamorselli03@gmail.com

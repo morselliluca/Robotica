@@ -122,6 +122,10 @@ Consiglio motori con encoder tornano utili per contare i giri che ha fatto la ru
 
 Per collegare raspberry ad arduino o simili usate la seriale e usate direttamente la porta USB poer evitare di bruciarlo in quanto la maggior parte degli arduino sono a 5v e la raspby supporta solo 3.3v
 
+Quando usate i driver della pololu come MC33926 portate il pin EN -> HIGH e i pin PWM(Negato)/D1 -> Low
+
+I pin INA e INB sono usati per la direzione, vanno messi uno in HIGH uno in LOW 
+
 
 Source:<br/>
 

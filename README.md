@@ -126,6 +126,11 @@ Quando usate i driver della pololu come MC33926 portate il pin EN -> HIGH e i pi
 
 I pin INA e INB sono usati per la direzione, vanno messi uno in HIGH uno in LOW 
 
+Da prova_v17 sul progetto Hive le funzioni hanno un timing e vengono eseguite esattamente ogni N millisecondi (la funzione si trova all'interno del void loop)<br/>
+	Odom viene mandata 100HZ<br/>
+	velocita e encoder sono calcolati 1000HZ<br/>
+
+Dalla prova_v18 su Hive la velocita viene controllata su ogni motore per fali girare alla stessa velocita tutti
 
 
 
@@ -175,6 +180,7 @@ https://www.autodesk.com/products/fusion-360/free-trial<br/>
 NOTA:<br/>
 Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti<br/>
 Siamo felici di aiutarvi per qualunque dubbio o perplessita<br/>
+Se pensate di copiare pari pari il robot....non fatelo se avete bisogno di copiare tutto pari pari non avete le competenze per farlo andare<br/>
 
 Luca Morselli:<br/>
 +39 3318670782 <br/>

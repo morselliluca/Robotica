@@ -1,5 +1,7 @@
 # Robotica
 
+SE NON AVETE VOGLIA DI LEGGERE A FINE README CI SONO LE INFORMAZZIONI PER CONTTATARCI
+
 Tutti i ptogetti robotica del Gruppo DKV Lab<br/>
 Siamo un gruppo di 2 persone dell'Itis rossi che hanno partecipato alla Robocup per 4 anni consecutivi con questi progetti.<br/>
 il gruppo è formato da:
@@ -127,8 +129,8 @@ Quando usate i driver della pololu come MC33926 portate il pin EN -> HIGH e i pi
 I pin INA e INB sono usati per la direzione, vanno messi uno in HIGH uno in LOW 
 
 Da prova_v17 sul progetto Hive le funzioni hanno un timing e vengono eseguite esattamente ogni N millisecondi (la funzione si trova all'interno del void loop)<br/>
-	Odom viene mandata 100HZ<br/>
-	velocita e encoder sono calcolati 1000HZ<br/>
+	-Odom viene mandata 100HZ<br/>
+	-velocita e encoder sono calcolati 1000HZ<br/>
 
 Dalla prova_v18 su Hive la velocita viene controllata su ogni motore per fali girare alla stessa velocita tutti
 

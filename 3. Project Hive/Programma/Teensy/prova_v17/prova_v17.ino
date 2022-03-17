@@ -2,6 +2,7 @@
 #include <ros/time.h>
 #include <tf/tf.h>
 #include <tf/transform_broadcaster.h>
+#include <geometry_msgs/Twist.h>
 #include <nav_msgs/Odometry.h>
 #include <std_msgs/String.h>
 #include <math.h>
@@ -12,11 +13,13 @@
 
 ros::NodeHandle nh;
 std_msgs::String str_msg;
+
 geometry_msgs::TransformStamped t;
 tf::TransformBroadcaster broadcaster;
 ros::Publisher blk("nero", & str_msg);
 ros::Publisher hot("calore", & str_msg);
 ros::Publisher str("partito", & str_msg);
+ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel" , velCallback);     //create a subscriber for ROS cmd_vel topic
 
 #define outputA1 29
 #define outputB1 30
@@ -105,6 +108,15 @@ int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
+int kx = 50;
+int kz = 10;
+
+float demandx;
+float demandz;
+
+float Left;
+float Right;
+
 void setup() {
     pinMode(buzzer, OUTPUT);
 
@@ -124,6 +136,7 @@ void setup() {
     
     nh.initNode(); // Initializing node handler
     broadcaster.init(nh); // odom data broadcaster init
+    nh.subscribe(sub);
     nh.advertise(hot);
     nh.advertise(str);
     nh.advertise(blk);
@@ -154,7 +167,14 @@ void loop() {
             encoder(); //fa gli encoder
         }
         if (counter % ciclivel == 0) {
+        Left = demandx - (demandz);
+        Right = demandx + (demandz);
 
+        Left = constrain(Left,-255,255);
+        Right = constrain(Right,-255,255);
+
+        driver1.setSpeeds(Left, Right);
+        driver2.setSpeeds(Left, Right);
         }
     counter++;
   }
@@ -276,6 +296,18 @@ void checkNero() {
 
 void checkCalore() {
 
+}
+
+void velCallback(  const geometry_msgs::Twist& vel)
+{
+     demandx = vel.linear.x;
+     demandz = vel.angular.z;
+
+     demandx = constrain(demandx,-1,1);    
+     demandz = constrain(demandz,-1.6,1.6);
+
+     demandx = demandx * kx;
+     demandz = demandz * kz;
 }
 
 void buzzzerok(int buzzer, int sound) {

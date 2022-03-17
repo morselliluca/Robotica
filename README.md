@@ -132,8 +132,6 @@ Da prova_v17 sul progetto Hive le funzioni hanno un timing e vengono eseguite es
 	-Odom viene mandata 100HZ<br/>
 	-velocita e encoder sono calcolati 1000HZ<br/>
 
-Dalla prova_v18 su Hive la velocita viene controllata su ogni motore per fali girare alla stessa velocita tutti
-
 
 
 Source:<br/>

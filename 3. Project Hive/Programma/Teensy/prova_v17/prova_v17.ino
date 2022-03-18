@@ -19,7 +19,6 @@ tf::TransformBroadcaster broadcaster;
 ros::Publisher blk("nero", & str_msg);
 ros::Publisher hot("calore", & str_msg);
 ros::Publisher str("partito", & str_msg);
-ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel" , velCallback);     //create a subscriber for ROS cmd_vel topic
 
 #define outputA1 29
 #define outputB1 30
@@ -109,14 +108,29 @@ int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
-int kx = 50;
-int kz = 10;
+int kx = 350;
+int kz = 200;
 
 float demandx;
 float demandz;
 
-float Left;
-float Right;
+float Left = 3500;
+float Right = 3500;
+
+void velCallback(  const geometry_msgs::Twist& vel)
+{
+     demandx = vel.linear.x;
+     demandz = vel.angular.z;
+
+     demandx = constrain(demandx,-1,1);    
+     demandz = constrain(demandz,-1,1);
+
+     demandx = demandx * kx;
+     demandz = demandz * kz;
+}
+
+ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel" , velCallback);     //create a subscriber for ROS cmd_vel topic
+
 
 void setup() {
     pinMode(buzzer, OUTPUT);
@@ -142,12 +156,6 @@ void setup() {
     nh.advertise(str);
     nh.advertise(blk);
 
-    analogWriteFrequency(2, 375000);
-    analogWriteFrequency(8, 375000);
-    analogWriteFrequency(23, 375000);
-    analogWriteFrequency(15, 375000);
-
-    analogWriteResolution(8);
     buzzzerok(buzzer, sound);
 }
 
@@ -167,18 +175,18 @@ void loop() {
         if (counter % cicliencoder == 0) {
             encoder(); //fa gli encoder
         }
-        if (counter % ciclivel == 0) {
+     
         Left = demandx - (demandz);
         Right = demandx + (demandz);
 
-        Left = constrain(Left,-255,255);
-        Right = constrain(Right,-255,255);
+        Left = constrain(Left,-200,200);
+        Right = constrain(Right,-200,200);
+        driver1.setSpeeds(Right, (Left*-1));
+        driver2.setSpeeds(Right, (Left*-1));
 
-        driver1.setSpeeds(Left, Right);
-        driver2.setSpeeds(Left, Right);
-        }
     counter++;
   }
+
 }
 
 void encoder() {
@@ -297,18 +305,6 @@ void checkNero() {
 
 void checkCalore() {
 
-}
-
-void velCallback(  const geometry_msgs::Twist& vel)
-{
-     demandx = vel.linear.x;
-     demandz = vel.angular.z;
-
-     demandx = constrain(demandx,-1,1);    
-     demandz = constrain(demandz,-1.6,1.6);
-
-     demandx = demandx * kx;
-     demandz = demandz * kz;
 }
 
 void buzzzerok(int buzzer, int sound) {

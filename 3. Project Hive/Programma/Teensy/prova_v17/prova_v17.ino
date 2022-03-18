@@ -43,6 +43,7 @@ ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel" , velCallback);     //create
 #define IR3 0x5B //indirizzo ir destra
 
 File myFile; //dichiarazione file
+
 DriverDkv driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
 DriverDkv driver2 = DriverDkv(22, 21, 23, 14, 13, 15);
 
@@ -148,7 +149,6 @@ void setup() {
 
     analogWriteResolution(8);
     buzzzerok(buzzer, sound);
-
 }
 
 void loop() {
@@ -162,6 +162,7 @@ void loop() {
             calcolaOdom(); //calcola odom
             checkPartito(); // controlla se lo switch da il parito
             sendOdom(); //manda la roba a ros
+            //myFile.write(String(t) + " ; " + String(nero) + " ; " + String(calore) + " ; " + String(partito));
         }
         if (counter % cicliencoder == 0) {
             encoder(); //fa gli encoder

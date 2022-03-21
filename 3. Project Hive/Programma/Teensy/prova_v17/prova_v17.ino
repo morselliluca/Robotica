@@ -41,7 +41,7 @@ ros::Publisher str("partito", & str_msg);
 #define IR2 0x5A //indirizzo ir sinistra
 #define IR3 0x5B //indirizzo ir destra
 
-File myFile; //dichiarazione file
+File dataFile;
 
 DriverDkv driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
 DriverDkv driver2 = DriverDkv(22, 21, 23, 14, 13, 15);
@@ -158,6 +158,9 @@ void setup() {
     nh.advertise(blk);
 
     buzzzerok(buzzer, sound);
+
+    SD.begin(BUILTIN_SDCARD);
+    dataFile = SD.open("datalog.txt", FILE_WRITE);
 }
 
 void loop() {
@@ -174,6 +177,7 @@ void loop() {
             nh.spinOnce();
             //myFile.write(String(t) + " ; " + String(nero) + " ; " + String(calore) + " ; " + String(partito));
             counter = 0;
+            dataFile.println(String(nero) + " ; " + String(calore) + " ; " + String(partito) + " ; " + x + " ; " + y);
         }
         if (counter % cicliencoder == 0) {
             encoder(); //fa gli encoder

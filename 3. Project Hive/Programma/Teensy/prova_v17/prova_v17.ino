@@ -107,8 +107,8 @@ int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
-int kx = 120;
-int kz = 100;
+int kx = 900;
+int kz = 800;
 
 float demandx;
 float demandz;

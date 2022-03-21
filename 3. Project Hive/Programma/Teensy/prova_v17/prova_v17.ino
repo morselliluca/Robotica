@@ -116,6 +116,8 @@ float demandz;
 float Left = 0;
 float Right = 0;
 
+int cutoff = 170;
+
 void velCallback(  const geometry_msgs::Twist& vel)
 {
      demandx = vel.linear.x;
@@ -180,8 +182,8 @@ void loop() {
         Left = demandx - (demandz);
         Right = demandx + (demandz);
 
-        Left = constrain(Left,-200,200);
-        Right = constrain(Right,-200,200);
+        Left = constrain(Left,-cutoff,cutoff);
+        Right = constrain(Right,-cutoff,cutoff);
         driver1.setSpeeds(Right, (Left*-1));
         driver2.setSpeeds(Right, (Left*-1));
 

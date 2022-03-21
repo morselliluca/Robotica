@@ -107,8 +107,8 @@ int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
-int kx = 1000;
-int kz = 700;
+int kx = 120;
+int kz = 100;
 
 float demandx;
 float demandz;
@@ -126,8 +126,8 @@ void velCallback(  const geometry_msgs::Twist& vel)
      demandx = constrain(demandx,-1,1);    
      demandz = constrain(demandz,-1,1);
 
-     demandx = demandx * kx;
-     demandz = demandz * kz;
+     demandx = map(demandx, -1, 1, -kx, kx);
+     demandz = map(demandz, -1, 1, -kz, kz);
 }
 
 ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel" , velCallback);     //create a subscriber for ROS cmd_vel topic
@@ -178,7 +178,7 @@ void loop() {
         if (counter % cicliencoder == 0) {
             encoder(); //fa gli encoder
         }
-     
+        
         Left = demandx - (demandz);
         Right = demandx + (demandz);
 

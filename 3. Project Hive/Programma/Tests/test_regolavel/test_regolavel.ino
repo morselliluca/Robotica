@@ -13,26 +13,9 @@ int x;
 int z;
 
 float encoderlast, encoderrev, encodererr, targetvel, vel;
-int rotms = 44;
-int rotrads = 4;
 int kp = 1;
 
-int counter1 = 0;
-int aState1;
-int aLastState1;
-
-int counter2 = 0;
-int aState2;
-int aLastState2;
-
-int counter3 = 0;
-int aState3;
-int aLastState3;
-
-int counter4 = 0;
-int aState4;
-int aLastState4;
-
+int ticks = 1240;
 long previousMillis;
 long currentMillis;
 
@@ -58,8 +41,8 @@ void loop() {
         previousMillis = currentMillis;
         if (counter % cicliodom == 0) {
             encoderrev = counter1 - encoderlast;
-            targetvel = x * rotms + z * rotrads;
-            encodererr = targetvel - encoderrev;
+     
+            encodererr = (((encoerrev *1000) / ticks) * 0.09 * 3.14 + 2) - x;
             vel = encodererr * kp + vel;
   
   

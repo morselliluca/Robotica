@@ -103,19 +103,18 @@ long currentMillis;
 int loopTime = 1; //cicli standardizzati da 1ms
 
 int cicliodom = 10; //ogni 10 cicli (10ms) fa la roba di odom
-int ciclivel = 10; //da fare
 int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
-int kx = 350;
-int kz = 200;
+int kx = 1000;
+int kz = 700;
 
 float demandx;
 float demandz;
 
-float Left = 3500;
-float Right = 3500;
+float Left = 0;
+float Right = 0;
 
 void velCallback(  const geometry_msgs::Twist& vel)
 {
@@ -170,7 +169,9 @@ void loop() {
             calcolaOdom(); //calcola odom
             checkPartito(); // controlla se lo switch da il parito
             sendOdom(); //manda la roba a ros
+            nh.spinOnce();
             //myFile.write(String(t) + " ; " + String(nero) + " ; " + String(calore) + " ; " + String(partito));
+            counter = 0;
         }
         if (counter % cicliencoder == 0) {
             encoder(); //fa gli encoder
@@ -184,7 +185,8 @@ void loop() {
         driver1.setSpeeds(Right, (Left*-1));
         driver2.setSpeeds(Right, (Left*-1));
 
-    counter++;
+        counter++;
+        
   }
 
 }
@@ -285,7 +287,6 @@ void sendOdom() {
     hot.publish( & str_msg);
     str_msg.data = starting;
     str.publish( & str_msg);
-    nh.spinOnce();
 
     dcountL = templ;
     dcountR = tempR;

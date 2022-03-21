@@ -9,13 +9,10 @@
 #define outputA4 36
 #define outputB4 35
 
-int x;
-int z;
+int counter = 0;
 
-float encoderlast, encoderrev, encodererr, targetvel, vel;
-int rotms = 44;
-int rotrads = 4;
-int kp = 1;
+float encoderrev, vel;
+int pwm1 = 20;
 
 int counter1 = 0;
 int aState1;
@@ -38,10 +35,11 @@ long currentMillis;
 
 int loopTime = 1; //cicli standardizzati da 1ms
 
-int cicliodom = 10; //ogni 10 cicli (10ms) fa la roba di odom
+int cicliodom = 5000; //ogni 10 cicli (10ms) fa la roba di odom
 int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 DriverDkv driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
+DriverDkv driver2 = DriverDkv(22, 21, 23, 14, 13, 15);
 
 void setup() {
   Serial.begin(9600);
@@ -54,22 +52,25 @@ void loop() {
   //Serial.println(String(counter1) +  String(counter2) +String(counter3) +String(counter4));
       currentMillis = millis();
 
-    if (currentMillis - previousMillis >= loopTime) { // start timed loop for everything else
+    if (currentMillis - previousMillis >= loopTime && pwm1 < 255) { // start timed loop for everything else
         previousMillis = currentMillis;
         if (counter % cicliodom == 0) {
-            encoderrev = counter1 - encoderlast;
-            targetvel = x * rotms + z * rotrads;
-            encodererr = targetvel - encoderrev;
-            vel = encodererr * kp + vel;
-  
-  
-            driver1.setSpeeds(vel, (vel*-1));
-  
-            encoderlast = counter1;  
-            counter = 0;
+            encoderrev = ((counter1+counter2+counter3+counter4)/4);
+            vel = (encoderrev / 5) * 0.2826;
+
+            driver1.setSpeeds(pwm1, (pwm1*-1));
+            driver2.setSpeeds(pwm1, (pwm1*-1));
+            counter1 = 0;
+            counter2 = 0;
+            counter3 = 0;
+            counter4 = 0;
+            pwm1 += 5;
         }
         if (counter % cicliencoder == 0) {
             encoder(); //fa gli encoder
+            Serial.print(vel);
+            Serial.print("\t");
+            Serial.println(pwm1);
         }
 
 

@@ -41,7 +41,7 @@ ros::Publisher str("partito", & str_msg);
 #define IR2 0x5A //indirizzo ir sinistra
 #define IR3 0x5B //indirizzo ir destra
 
-File myFile; //dichiarazione file
+File dataFile;
 
 DriverDkv driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
 DriverDkv driver2 = DriverDkv(22, 21, 23, 14, 13, 15);
@@ -80,9 +80,9 @@ char black[] = "";
 char heat[] = "";
 char starting[] = "";
 
-String nero = "0";
-String calore = "0";
-String partito = "0";
+String nero = "0"; //cambia questa variabile per provare il nero
+String calore = "0"; //cambia questa variabile per provare il calore
+String partito = "0"; //cambia questa variabile per provare il parito
 
 float dL; // Dl = 2*PI*R*(lefttick/totaltick)
 float dR; // Dr = 2*PI*R*(righttick/totaltick)
@@ -107,10 +107,8 @@ int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
-int pwmres = 13;
-
-float kx = pow(2, pwmres) * 0.7;
-float kz = pow(2, pwmres) * 0.5;
+int kx = 900;
+int kz = 800;
 
 float demandx;
 float demandz;
@@ -120,61 +118,30 @@ float Right = 0;
 
 int cutoff = 170;
 
-void velCallback(const geometry_msgs::Twist & vel) {
-    demandx = vel.linear.x;
-    demandz = vel.angular.z;
+void velCallback(  const geometry_msgs::Twist& vel)
+{
+     demandx = vel.linear.x;
+     demandz = vel.angular.z;
 
-    demandx = constrain(demandx, -1, 1);
-    demandz = constrain(demandz, -1, 1);
-    if (demandx > 0) {
-        demandx = map(demandx, 0, 1, (kx * 0.35), kx);
-    } else {
-        demandx = map(demandx, 0, 1, -kx, -(kx * 0.35));
-    }
+     demandx = constrain(demandx,-1,1);    
+     demandz = constrain(demandz,-1,1);
 
-    if (demandx > 0) {
-        demandz = map(demandz, -1, 0, (kz * 0.35), kz);
-    } else {
-        demandz = map(demandz, -1, 0, -kz, -(kz * 0.35));
-    }
+     demandx = map(demandx, -1, 1, -kx, kx);
+     demandz = map(demandz, -1, 1, -kz, kz);
 }
 
-ros::Subscriber < geometry_msgs::Twist > sub("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
+ros::Subscriber<geometry_msgs::Twist> sub("cmd_vel" , velCallback);     //create a subscriber for ROS cmd_vel topic
+
 
 void setup() {
-
-    pinMode(buzzer, OUTPUT);
-
-    pinMode(outputA1, INPUT);
-    pinMode(outputB1, INPUT);
-    pinMode(outputA2, INPUT);
-    pinMode(outputB2, INPUT);
-    pinMode(outputA3, INPUT);
-    pinMode(outputB3, INPUT);
-    pinMode(outputA4, INPUT);
-    pinMode(outputB4, INPUT);
-
-    aLastState1 = digitalRead(outputA1);
-    aLastState2 = digitalRead(outputA2);
-    aLastState3 = digitalRead(outputA3);
-    aLastState4 = digitalRead(outputA4);
-
-    analogWriteFrequency(2, 18310);
-    analogWriteFrequency(8, 18310);
-    analogWriteFrequency(15, 18310);
-    analogWriteFrequency(23, 18310);
     
-    analogWriteResolution(owmres);
-
+    
     nh.initNode(); // Initializing node handler
     broadcaster.init(nh); // odom data broadcaster init
     nh.subscribe(sub);
     nh.advertise(hot);
     nh.advertise(str);
     nh.advertise(blk);
-
-    buzzzerok(buzzer, sound);
-
 }
 
 void loop() {
@@ -189,83 +156,13 @@ void loop() {
             checkPartito(); // controlla se lo switch da il parito
             sendOdom(); //manda la roba a ros
             nh.spinOnce();
-            //myFile.write(String(t) + " ; " + String(nero) + " ; " + String(calore) + " ; " + String(partito));
             counter = 0;
         }
-        if (counter % cicliencoder == 0) {
-            encoder(); //fa gli encoder
-        }
-
-        Left = demandx - demandz;
-        Right = demandx + demandz;
-
-        Left = constrain(Left, -cutoff, cutoff);
-        Right = constrain(Right, -cutoff, cutoff);
-
-        driver1.setSpeeds(Right, (Left * -1));
-        driver2.setSpeeds(Right, (Left * -1));
-
+        
         counter++;
+        
+  }
 
-    }
-
-}
-
-void encoder() {
-    aState1 = digitalRead(outputA1); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState1 != aLastState1) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB1) != aState1) {
-            counter1++;
-        } else {
-            counter1--;
-        }
-
-    }
-    aLastState1 = aState1; // Updates the previous state of the outputA with the current state
-
-    aState2 = digitalRead(outputA2); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState2 != aLastState2) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB2) != aState2) {
-            counter2--;
-        } else {
-            counter2++;
-        }
-
-    }
-    aLastState2 = aState2; // Updates the previous state of the outputA with the current state
-
-    aState3 = digitalRead(outputA3); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState3 != aLastState3) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB3) != aState3) {
-            counter3--;
-        } else {
-            counter3++;
-        }
-
-    }
-    aLastState3 = aState3; // Updates the previous state of the outputA with the current state
-
-    aState4 = digitalRead(outputA4); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState4 != aLastState4) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB4) != aState4) {
-            counter4++;
-        } else {
-            counter4--;
-        }
-
-    }
-    aLastState4 = aState4; // Updates the previous state of the outputA with the current state
-
-    counterL = (counter1 + counter2) / 2;
-    counterR = (counter3 + counter4) / 2;
 }
 
 void calcolaOdom() {
@@ -310,32 +207,4 @@ void sendOdom() {
 
     dcountL = templ;
     dcountR = tempR;
-}
-
-void checkPartito() {
-    if (digitalRead(startsw)) {
-        partito = "0";
-    } else {
-        partito = "1";
-    }
-}
-
-void checkNero() {
-
-}
-
-void checkCalore() {
-
-}
-
-void buzzzerok(int buzzer, int sound) {
-
-    tone(buzzer, sound);
-    delay(100);
-    noTone(buzzer);
-    tone(buzzer, sound);
-    delay(100);
-    noTone(buzzer);
-    delay(700);
-
 }

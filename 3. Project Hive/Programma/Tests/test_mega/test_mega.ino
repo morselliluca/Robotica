@@ -150,10 +150,7 @@ void loop() {
     if (currentMillis - previousMillis >= loopTime) { // start timed loop for everything else
         previousMillis = currentMillis;
         if (counter % cicliodom == 0) {
-            checkCalore(); //da fare
-            checkNero(); //da fare
             calcolaOdom(); //calcola odom
-            checkPartito(); // controlla se lo switch da il parito
             sendOdom(); //manda la roba a ros
             nh.spinOnce();
             counter = 0;

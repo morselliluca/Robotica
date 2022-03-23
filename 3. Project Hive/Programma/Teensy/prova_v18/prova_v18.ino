@@ -158,14 +158,14 @@ void setup() {
     aLastState2 = digitalRead(outputA2);
     aLastState3 = digitalRead(outputA3);
     aLastState4 = digitalRead(outputA4);
-
+    /*
     analogWriteFrequency(2, 18310);
     analogWriteFrequency(8, 18310);
     analogWriteFrequency(15, 18310);
     analogWriteFrequency(23, 18310);
     
     analogWriteResolution(owmres);
-
+    */
     nh.initNode(); // Initializing node handler
     broadcaster.init(nh); // odom data broadcaster init
     nh.subscribe(sub);

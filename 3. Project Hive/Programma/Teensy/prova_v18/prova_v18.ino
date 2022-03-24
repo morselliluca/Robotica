@@ -9,6 +9,7 @@
 #include <DriverDkv.h>
 #include <SD.h>
 #include <SPI.h>
+#include <Adafruit_MLX90614.h>
 #include <Wire.h>
 
 ros::NodeHandle nh;
@@ -40,6 +41,8 @@ ros::Publisher str("partito", & str_msg);
 #define IR1 0x5C //indirizzo ir davanti
 #define IR2 0x5A //indirizzo ir sinistra
 #define IR3 0x5B //indirizzo ir destra
+
+Adafruit_MLX90614 mlx;
 
 File myFile; //dichiarazione file
 
@@ -107,10 +110,11 @@ int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
-int pwmres = 13;
+int pwmres = 8;
 
 float kx = pow(2, pwmres) * 0.7;
 float kz = pow(2, pwmres) * 0.5;
+float kc = 1.2;
 
 float demandx;
 float demandz;
@@ -158,20 +162,18 @@ void setup() {
     aLastState2 = digitalRead(outputA2);
     aLastState3 = digitalRead(outputA3);
     aLastState4 = digitalRead(outputA4);
-    /*
-    analogWriteFrequency(2, 18310);
-    analogWriteFrequency(8, 18310);
-    analogWriteFrequency(15, 18310);
-    analogWriteFrequency(23, 18310);
-    
-    analogWriteResolution(owmres);
-    */
+
     nh.initNode(); // Initializing node handler
     broadcaster.init(nh); // odom data broadcaster init
     nh.subscribe(sub);
     nh.advertise(hot);
     nh.advertise(str);
     nh.advertise(blk);
+
+    mlx.begin(); 
+
+    SD.begin(BUILTIN_SDCARD);
+    File myFile = SD.open("datalog.txt", FILE_WRITE);
 
     buzzzerok(buzzer, sound);
 
@@ -187,9 +189,12 @@ void loop() {
             checkNero(); //da fare
             calcolaOdom(); //calcola odom
             checkPartito(); // controlla se lo switch da il parito
-            sendOdom(); //manda la roba a ros
+            sendStuff(); //manda la roba a ros
             nh.spinOnce();
-            //myFile.write(String(t) + " ; " + String(nero) + " ; " + String(calore) + " ; " + String(partito));
+            myFile.println(String(nero) + " ; " + String(calore) + " ; " + String(partito) + " ; " + String(x) + " ; " + String(y));
+            partito = "0";
+            calore = "0";
+            nero = "0";
             counter = 0;
         }
         if (counter % cicliencoder == 0) {
@@ -286,7 +291,7 @@ void calcolaOdom() {
         theta = -PI;
 }
 
-void sendOdom() {
+void sendStuff() {
     // creo il pacchetto odom + tf
     t.header.frame_id = odom; // odom data publishes on Odom topic
     t.child_frame_id = base_link; // base link
@@ -325,6 +330,20 @@ void checkNero() {
 }
 
 void checkCalore() {
+  mlx.AddrSet(IR1); 
+  char temp[3];
+  if(mlx.readAmbientTempC() < mlx.readObjectTempC() * kc){
+    temp[0] = "F";
+  }
+  mlx.AddrSet(IR2);
+  if(mlx.readAmbientTempC() < mlx.readObjectTempC() * kc){
+    temp[1] = "L";
+  }
+  mlx.AddrSet(IR3);
+  if(mlx.readAmbientTempC() < mlx.readObjectTempC() * kc){
+    temp[2] = "R";
+  }
+  calore = String(temp);
 
 }
 

@@ -44,8 +44,6 @@ ros::Publisher str("partito", & str_msg);
 
 Adafruit_MLX90614 mlx;
 
-File myFile; //dichiarazione file
-
 DriverDkv driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
 DriverDkv driver2 = DriverDkv(22, 21, 23, 14, 13, 15);
 
@@ -133,11 +131,11 @@ void velCallback(const geometry_msgs::Twist & vel) {
     if (demandx > 0) {
         demandx = map(demandx, 0, 1, (kx * 0.35), kx);
     } else {
-        demandx = map(demandx, 0, 1, -kx, -(kx * 0.35));
+        demandx = map(demandx, -1, 0, -kx, -(kx * 0.35));
     }
 
     if (demandx > 0) {
-        demandz = map(demandz, -1, 0, (kz * 0.35), kz);
+        demandz = map(demandz, 0, 1, (kz * 0.35), kz);
     } else {
         demandz = map(demandz, -1, 0, -kz, -(kz * 0.35));
     }
@@ -172,9 +170,6 @@ void setup() {
 
     mlx.begin(); 
 
-    SD.begin(BUILTIN_SDCARD);
-    File myFile = SD.open("datalog.txt", FILE_WRITE);
-
     buzzzerok(buzzer, sound);
 
 }
@@ -191,7 +186,6 @@ void loop() {
             checkPartito(); // controlla se lo switch da il parito
             sendStuff(); //manda la roba a ros
             nh.spinOnce();
-            myFile.println(String(nero) + " ; " + String(calore) + " ; " + String(partito) + " ; " + String(x) + " ; " + String(y));
             partito = "0";
             calore = "0";
             nero = "0";

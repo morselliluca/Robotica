@@ -114,6 +114,8 @@ float kx = pow(2, pwmres) * 0.7;
 float kz = pow(2, pwmres) * 0.5;
 float kc = 1.2;
 
+float basecutoff = 0.45;
+
 float demandx;
 float demandz;
 
@@ -135,9 +137,9 @@ void velCallback(const geometry_msgs::Twist & vel) {
     }
 
     if (demandx > 0) {
-        demandz = map(demandz, 0, 1, (kz * 0.35), kz);
+        demandz = map(demandz, 0, 1, (kz * basecutoff), kz);
     } else {
-        demandz = map(demandz, -1, 0, -kz, -(kz * 0.35));
+        demandz = map(demandz, -1, 0, -kz, -(kz * basecutoff));
     }
 }
 

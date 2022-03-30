@@ -114,7 +114,7 @@ float kx = pow(2, pwmres) * 0.7;
 float kz = pow(2, pwmres) * 0.5;
 float kc = 1.2;
 
-float basecutoff = 0.45;
+float basecutoff = 0.70;
 
 float demandx;
 float demandz;

@@ -78,7 +78,9 @@ String nero = "0";
 String calore = "0";
 String partito = "0";
 
-String data[13];
+int ndati = 14;
+
+String data[ndati];
 
 float dL; // Dl = 2*PI*R*(lefttick/totaltick)
 float dR; // Dr = 2*PI*R*(righttick/totaltick)
@@ -289,22 +291,23 @@ void calcolaOdom() {
 void sendStuff() {
     data[0] = x;
     data[1] = y;
-    data[2] = Left;
-    data[3] = Right;
-    data[4] = String(dL / 0.01);
-    data[5] = String(dR / 0.01);
+    data[2] = theta;
+    data[3] = Left;
+    data[4] = Right;
+    data[5] = String(dL / 0.01);
+    data[6] = String(dR / 0.01);
     mlx.AddrSet(IR1);
-    data[6] = mlx.readAmbientTempC();
-    data[7] = mlx.readObjectTempC();
+    data[7] = mlx.readAmbientTempC();
+    data[8] = mlx.readObjectTempC();
     mlx.AddrSet(IR2);
-    data[8] = mlx.readAmbientTempC();
-    data[9] = mlx.readObjectTempC();
+    data[9] = mlx.readAmbientTempC();
+    data[10] = mlx.readObjectTempC();
     mlx.AddrSet(IR3);
-    data[10] = mlx.readAmbientTempC();
-    data[11] = mlx.readObjectTempC();
-    data[12] = millis();
+    data[11] = mlx.readAmbientTempC();
+    data[12] = mlx.readObjectTempC();
+    data[13] = nh.now();
 
-    for(int i = 0; i < 13; i++){
+    for(int i = 0; i < ndati; i++){
       dataFile.print(data[i] + ";");
     }
     dataFile.println();

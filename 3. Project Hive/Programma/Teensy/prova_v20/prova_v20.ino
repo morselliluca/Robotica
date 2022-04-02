@@ -78,7 +78,7 @@ String nero = "0";
 String calore = "0";
 String partito = "0";
 
-String data[12];
+String data[13];
 
 float dL; // Dl = 2*PI*R*(lefttick/totaltick)
 float dR; // Dr = 2*PI*R*(righttick/totaltick)
@@ -302,8 +302,12 @@ void sendStuff() {
     mlx.AddrSet(IR3);
     data[10] = mlx.readAmbientTempC();
     data[11] = mlx.readObjectTempC();
-    
-    dataFile.println(data[0]);
+    data[12] = millis();
+
+    for(int i = 0; i < 13; i++){
+      dataFile.print(data[i] + ";");
+    }
+    dataFile.println();
     
     nero.toCharArray(black, (nero.length() + 1));
     calore.toCharArray(heat, (calore.length() + 1));

@@ -203,10 +203,14 @@ void loop() {
         Left = constrain(Left, -cutoff, cutoff);
         Right = constrain(Right, -cutoff, cutoff);
 
-        //driver1.setSpeeds(Right, (Left * -1));
-        driver1.setSpeeds((Right * -1), Left);
-        //driver2.setSpeeds(Right, (Left * -1));
-        driver2.setSpeeds((Right * -1), Left);
+        if(digitalRead(startsw)){
+            driver1.setSpeeds((Right * -1), Left);
+            driver2.setSpeeds((Right * -1), Left);
+        }
+        else{
+            driver1.setSpeeds(0, 0);
+            driver2.setSpeeds(0, 0);
+        }
 
         counter++;
 

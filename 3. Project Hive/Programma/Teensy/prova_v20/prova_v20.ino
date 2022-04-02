@@ -78,7 +78,7 @@ String nero = "0";
 String calore = "0";
 String partito = "0";
 
-int ndati = 14;
+#define ndati 14
 
 String data[ndati];
 
@@ -145,7 +145,6 @@ ros::Subscriber < geometry_msgs::Twist > sub("cmd_vel", velCallback); //create a
 File dataFile;
 
 void setup() {
-
     pinMode(buzzer, OUTPUT);
 
     pinMode(outputA1, INPUT);
@@ -305,10 +304,10 @@ void sendStuff() {
     mlx.AddrSet(IR3);
     data[11] = mlx.readAmbientTempC();
     data[12] = mlx.readObjectTempC();
-    data[13] = nh.now();
+    data[13] = String(millis());
 
     for(int i = 0; i < ndati; i++){
-      dataFile.print(data[i] + ";");
+      dataFile.print(data[i] + ",");
     }
     dataFile.println();
     

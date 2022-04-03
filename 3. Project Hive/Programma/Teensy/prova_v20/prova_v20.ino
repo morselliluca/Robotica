@@ -107,11 +107,12 @@ int counter = 0;
 
 int pwmres = 8;
 
-float kx = pow(2, pwmres) * 0.7;
-float kz = pow(2, pwmres) * 0.5;
+float kx = pow(2, pwmres);
+float kz = pow(2, pwmres);
+
 float kc = 0.7;
 
-float basecutoff = 0.70;
+float basecutoff = 0.50;
 
 float demandx;
 float demandz;
@@ -119,7 +120,7 @@ float demandz;
 float Left = 0;
 float Right = 0;
 
-int cutoff = 170;
+int cutoff = 180;
 
 void velCallback(const geometry_msgs::Twist & vel) {
     demandx = vel.linear.x;
@@ -128,9 +129,9 @@ void velCallback(const geometry_msgs::Twist & vel) {
     demandx = constrain(demandx, -1, 1);
     demandz = constrain(demandz, -1, 1);
     if (demandx > 0) {
-        demandx = map(demandx, 0, 1, (kx * 0.35), kx);
+        demandx = map(demandx, 0, 1, (kx * basecutoff), kx);
     } else {
-        demandx = map(demandx, -1, 0, -kx, -(kx * 0.35));
+        demandx = map(demandx, -1, 0, -kx, -(kx * basecutoff));
     }
 
     if (demandx > 0) {

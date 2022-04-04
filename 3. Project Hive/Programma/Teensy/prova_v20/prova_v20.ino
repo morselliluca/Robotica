@@ -175,7 +175,6 @@ void setup() {
     buzzzerok(buzzer, sound);
 
     SD.begin(BUILTIN_SDCARD);
-    dataFile = SD.open("datalog.txt", FILE_WRITE);
 
 }
 
@@ -299,6 +298,7 @@ void calcolaOdom() {
 }
 
 void sendStuff() {
+    dataFile = SD.open("datalog.txt", FILE_WRITE);
     data[0] = x;
     data[1] = y;
     data[2] = theta;
@@ -322,6 +322,7 @@ void sendStuff() {
       dataFile.print(data[i] + ",");
     }
     dataFile.println();
+    dataFile.close();
     
     nero.toCharArray(black, (nero.length() + 1));
     calore.toCharArray(heat, (calore.length() + 1));

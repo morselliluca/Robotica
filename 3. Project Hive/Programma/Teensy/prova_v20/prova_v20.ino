@@ -78,7 +78,7 @@ String nero = "0";
 String calore = "0";
 String partito = "0";
 
-#define ndati 14
+#define ndati 15
 
 String data[ndati];
 
@@ -121,6 +121,8 @@ float Left = 0;
 float Right = 0;
 
 int cutoff = 180;
+
+int action = 0;
 
 void velCallback(const geometry_msgs::Twist & vel) {
     demandx = vel.linear.x;
@@ -311,7 +313,8 @@ void sendStuff() {
     mlx.AddrSet(IR3);
     data[11] = mlx.readAmbientTempC();
     data[12] = mlx.readObjectTempC();
-    data[13] = String(millis());
+    data[13] = action;
+    data[14] = String(millis());
 
     for(int i = 0; i < ndati; i++){
       dataFile.print(data[i] + ",");

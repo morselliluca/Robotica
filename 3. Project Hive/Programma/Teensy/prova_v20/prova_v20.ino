@@ -207,8 +207,10 @@ void loop() {
         Right = constrain(Right, -cutoff, cutoff);
 
         if(digitalRead(startsw)){
-            driver1.setSpeeds((Right * -1), Left);
-            driver2.setSpeeds((Right * -1), Left);
+            //driver1.setSpeeds((Right * -1), Left);
+            driver1.setSpeeds(Right, (Left * -1));
+            //driver2.setSpeeds((Right * -1), Left);
+            driver2.setSpeeds(Right, (Left * -1));
         }
         else{
             driver1.setSpeeds(0, 0);

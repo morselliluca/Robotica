@@ -110,7 +110,7 @@ int pwmres = 8;
 float kx = pow(2, pwmres);
 float kz = pow(2, pwmres);
 
-float kc = 0.7;
+float kc = 0.3;
 
 float basecutoff = 0.50;
 

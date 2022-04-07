@@ -136,7 +136,7 @@ void velCallback(const geometry_msgs::Twist & vel) {
         demandx = map(demandx, -1, 0, -kx, -(kx * basecutoff));
     }
 
-    if (demandx > 0) {
+    if (demandz > 0) {
         demandz = map(demandz, 0, 1, (kz * basecutoff), kz);
     } else {
         demandz = map(demandz, -1, 0, -kz, -(kz * basecutoff));

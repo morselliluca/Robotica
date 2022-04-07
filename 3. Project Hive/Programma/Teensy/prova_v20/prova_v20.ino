@@ -201,6 +201,8 @@ void loop() {
 
         Left = demandx - demandz;
         Right = demandx + demandz;
+        //Left = demandx + demandz;
+        //Right = demandx - demandz;
 
         Left = constrain(Left, -cutoff, cutoff);
         Right = constrain(Right, -cutoff, cutoff);

@@ -107,8 +107,8 @@ int counter = 0;
 
 int pwmres = 8;
 
-float kx = pow(2, pwmres);
-float kz = pow(2, pwmres);
+float kx = pow(2, pwmres) * 0.7;
+float kz = pow(2, pwmres) * 0.7;
 
 float kc = 0.3;
 

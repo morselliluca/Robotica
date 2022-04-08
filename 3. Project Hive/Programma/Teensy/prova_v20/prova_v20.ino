@@ -107,8 +107,8 @@ int counter = 0;
 
 int pwmres = 8;
 
-float kx = pow(2, pwmres) * 0.7;
-float kz = pow(2, pwmres) * 0.7;
+float kx = pow(2, pwmres) * 0.4;
+float kz = pow(2, pwmres) * 0.4;
 
 float kc = 0.3;
 
@@ -120,7 +120,7 @@ float demandz;
 float Left = 0;
 float Right = 0;
 
-int cutoff = 180;
+int cutoff = 150;
 
 int action = 0;
 
@@ -175,6 +175,20 @@ void setup() {
     buzzzerok(buzzer, sound);
 
     SD.begin(BUILTIN_SDCARD);
+
+    //turn
+    while(!digitalRead(startsw)){
+      delay(100);
+      tone(buzzer, sound);
+      delay(100);
+      noTone(buzzer);
+    }
+    while(abs(counterL) < tick){
+            driver1.setSpeeds(80, 80);
+            driver2.setSpeeds(80, 80);
+    }
+
+    
 
 }
 

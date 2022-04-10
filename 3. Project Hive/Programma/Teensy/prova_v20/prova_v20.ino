@@ -335,7 +335,8 @@ void sendStuff() {
     data[14] = String(millis());
 
     for(int i = 0; i < ndati - 1; i++){
-      dataFile.print(data[i] + ",");
+      dataFile.print(data[i]);
+      dataFile.print(",");
     }
     dataFile.print(data[ndati - 1]);
     dataFile.println();

@@ -184,8 +184,8 @@ void setup() {
       noTone(buzzer);
     }
     while(abs(counterL) < tick){
-            driver1.setSpeeds(80, 80);
-            driver2.setSpeeds(80, 80);
+            driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
+            driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));
     }
 
     
@@ -315,28 +315,29 @@ void calcolaOdom() {
 
 void sendStuff() {
     dataFile = SD.open("datalog.txt", FILE_WRITE);
-    data[0] = x;
-    data[1] = y;
-    data[2] = theta;
-    data[3] = Left;
-    data[4] = Right;
+    data[0] = String(x);
+    data[1] = String(y);
+    data[2] = String(theta);
+    data[3] = String(Left);
+    data[4] = String(Right);
     data[5] = String(dL / 0.01);
     data[6] = String(dR / 0.01);
     mlx.AddrSet(IR1);
-    data[7] = mlx.readAmbientTempC();
-    data[8] = mlx.readObjectTempC();
+    data[7] = String(mlx.readAmbientTempC());
+    data[8] = String(mlx.readObjectTempC());
     mlx.AddrSet(IR2);
-    data[9] = mlx.readAmbientTempC();
-    data[10] = mlx.readObjectTempC();
+    data[9] = String(mlx.readAmbientTempC());
+    data[10] = String(mlx.readObjectTempC());
     mlx.AddrSet(IR3);
-    data[11] = mlx.readAmbientTempC();
-    data[12] = mlx.readObjectTempC();
-    data[13] = action;
+    data[11] = String(mlx.readAmbientTempC());
+    data[12] = String(mlx.readObjectTempC());
+    data[13] = String(action);
     data[14] = String(millis());
 
-    for(int i = 0; i < ndati; i++){
+    for(int i = 0; i < ndati - 1; i++){
       dataFile.print(data[i] + ",");
     }
+    dataFile.print(data[ndati - 1]);
     dataFile.println();
     dataFile.close();
     
@@ -365,7 +366,14 @@ void checkPartito() {
 }
 
 void checkNero() {
-
+  /*
+    if(){
+          while(abs(counterL)/3 < tick){
+            driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
+            driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
+          }
+    nero = "1";
+    }*/
 }
 
 void checkCalore() {

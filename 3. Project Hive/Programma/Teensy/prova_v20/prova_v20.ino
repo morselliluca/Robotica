@@ -189,10 +189,18 @@ void setup() {
 
     //turn
     while(!digitalRead(startsw)){
+      tone(buzzer, sound);
+      delay(100);
+      noTone(buzzer);
       delay(100);
       tone(buzzer, sound);
       delay(100);
       noTone(buzzer);
+      delay(100);
+      tone(buzzer, sound);
+      delay(100);
+      noTone(buzzer);
+      delay(5000);
     }
     while(abs(counterL) < tick){
             driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));

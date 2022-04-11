@@ -185,7 +185,7 @@ void setup() {
 
     buzzzerok(buzzer, sound);
 
-    //SD.begin(BUILTIN_SDCARD);
+    SD.begin(BUILTIN_SDCARD);
 
     //turn
     while(!digitalRead(startsw)){
@@ -345,7 +345,7 @@ void sendStuff() {
     data[12] = String(mlx.readObjectTempC());
     data[13] = String(action);
     data[14] = String(millis());
-/*
+
     for(int i = 0; i < ndati - 1; i++){
       dataFile.print(data[i]);
       dataFile.print(",");
@@ -353,7 +353,7 @@ void sendStuff() {
     dataFile.print(data[ndati - 1]);
     dataFile.println();
     dataFile.close();
-    */
+    
     nero.toCharArray(black, (nero.length() + 1));
     calore.toCharArray(heat, (calore.length() + 1));
     partito.toCharArray(starting, (partito.length() + 1));

@@ -143,7 +143,15 @@ void velCallback(const geometry_msgs::Twist & vel) {
     }
 }
 
-ros::Subscriber < geometry_msgs::Twist > sub("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
+ros::Subscriber < geometry_msgs::Twist > sub1("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
+
+void cubimsg(const std_msgs::String& msg)
+{
+  String temporanea = msg.data;
+  action = temporanea.toInt();
+}
+ 
+ros::Subscriber<std_msgs::String> sub2("cubi", &cubimsg);
 
 File dataFile;
 
@@ -165,7 +173,10 @@ void setup() {
     aLastState4 = digitalRead(outputA4);
 
     nh.initNode(); // Initializing node handler
-    nh.subscribe(sub);
+    
+    nh.subscribe(sub1);
+    nh.subscribe(sub2);
+    
     nh.advertise(hot);
     nh.advertise(str);
     nh.advertise(blk);
@@ -203,6 +214,7 @@ void loop() {
             calcolaOdom(); //calcola odom
             checkPartito(); // controlla se lo switch da il parito
             sendStuff(); //manda la roba a ros
+            cagaCubi();
             nh.spinOnce();
             partito = "0";
             calore = "0";
@@ -379,7 +391,7 @@ void checkNero() {
 
 void checkCalore() {
   mlx.AddrSet(IR1); 
-  char temp[3];
+  char temp[3] = {'0','0','0'};
   if(mlx.readAmbientTempC() < mlx.readObjectTempC() * kc){
     temp[0] = "F";
   }
@@ -393,6 +405,12 @@ void checkCalore() {
   }
   calore = String(temp);
 
+}
+
+void cagaCubi(){
+  while(action >= 0){
+    //gira
+  }
 }
 
 void buzzzerok(int buzzer, int sound) {

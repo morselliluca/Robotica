@@ -9,13 +9,6 @@
 #include <Adafruit_MLX90614.h>
 #include <Wire.h>
 
-ros::NodeHandle nh;
-std_msgs::String str_msg;
-
-ros::Publisher blk("nero", & str_msg);
-ros::Publisher hot("calore", & str_msg);
-ros::Publisher str("partito", & str_msg);
-
 #define outputA1 29
 #define outputB1 30
 #define outputA2 31
@@ -36,6 +29,8 @@ ros::Publisher str("partito", & str_msg);
 #define IR1 0x5C //indirizzo ir davanti
 #define IR2 0x5A //indirizzo ir sinistra
 #define IR3 0x5B //indirizzo ir destra
+
+#define ndati 15
 
 Adafruit_MLX90614 mlx;
 
@@ -58,6 +53,25 @@ int counter4 = 0;
 int aState4;
 int aLastState4;
 
+int buzzer = 26; //buzzer
+int sound = 2000; //suono
+
+int loopTime = 1; //cicli standardizzati da 1ms
+
+int cicliodom = 10; //ogni 10 cicli (10ms) fa la roba di odom
+int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
+
+int counter = 0;
+
+int pwmres = 8; 
+
+int cutoff = 150;
+
+int action = 0;
+
+signed int templ;
+signed int tempR;
+
 volatile signed int counterL = 0; // This variable will increase or decrease depending on the rotation of encoder
 volatile signed int counterR = 0; // This variable will increase or decrease depending on the rotation of encoder
 volatile int dcountL = 0; // diff in encoder reading for left wheel
@@ -67,8 +81,6 @@ double x = 0.0; // Initial X position
 double y = 0.0; // Initial Y position
 double theta = 0.00; // Initial Theta angle
 
-signed int templ;
-signed int tempR;
 
 char black[] = "";
 char heat[] = "";
@@ -77,8 +89,6 @@ char starting[] = "";
 String nero = "0";
 String calore = "0";
 String partito = "0";
-
-#define ndati 15
 
 String data[ndati];
 
@@ -89,23 +99,6 @@ float dC;
 float R = 0.09; // Wheel Radius 
 float tick = 1240; // Encoder total tick
 float len = 0.18; // Distance between two wheels
-
-int buzzer = 26; //buzzer
-int sound = 2000; //suono 
-
-bool ctrl = true;
-
-long previousMillis;
-long currentMillis;
-
-int loopTime = 1; //cicli standardizzati da 1ms
-
-int cicliodom = 10; //ogni 10 cicli (10ms) fa la roba di odom
-int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
-
-int counter = 0;
-
-int pwmres = 8;
 
 float kx = pow(2, pwmres) * 0.5;
 float kz = pow(2, pwmres) * 0.5;
@@ -120,9 +113,10 @@ float demandz;
 float Left = 0;
 float Right = 0;
 
-int cutoff = 150;
+bool ctrl = true;
 
-int action = 0;
+long previousMillis;
+long currentMillis;
 
 void velCallback(const geometry_msgs::Twist & vel) {
     demandx = vel.linear.x;
@@ -143,15 +137,21 @@ void velCallback(const geometry_msgs::Twist & vel) {
     }
 }
 
-ros::Subscriber < geometry_msgs::Twist > sub1("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
-
 void cubimsg(const std_msgs::String& msg)
 {
   String temporanea = msg.data;
   action = temporanea.toInt();
 }
- 
+
+ros::NodeHandle nh;
+std_msgs::String str_msg;
+
+ros::Publisher blk("nero", & str_msg);
+ros::Publisher hot("calore", & str_msg);
+ros::Publisher str("partito", & str_msg);
+
 ros::Subscriber<std_msgs::String> sub2("cubi", &cubimsg);
+ros::Subscriber < geometry_msgs::Twist > sub1("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
 
 File dataFile;
 
@@ -235,16 +235,12 @@ void loop() {
 
         Left = demandx - demandz;
         Right = demandx + demandz;
-        //Left = demandx + demandz;
-        //Right = demandx - demandz;
 
         Left = constrain(Left, -cutoff, cutoff);
         Right = constrain(Right, -cutoff, cutoff);
 
         if(digitalRead(startsw)){
-            //driver1.setSpeeds((Right * -1), Left);
             driver1.setSpeeds(Right, (Left * -1));
-            //driver2.setSpeeds((Right * -1), Left);
             driver2.setSpeeds(Right, (Left * -1));
         }
         else{

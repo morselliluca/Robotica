@@ -59,7 +59,6 @@ int sound = 2000; //suono
 int loopTime = 1; //cicli standardizzati da 1ms
 
 int cicliodom = 10; //ogni 10 cicli (10ms) fa la roba di odom
-int cicliencoder = 1; //ogni 1 cicli (1ms) fa la roba di odom
 
 int counter = 0;
 
@@ -100,12 +99,12 @@ float R = 0.09; // Wheel Radius
 float tick = 1240; // Encoder total tick
 float len = 0.18; // Distance between two wheels
 
-float kx = pow(2, pwmres) * 0.5;
-float kz = pow(2, pwmres) * 0.5;
+float kx = pow(2, pwmres) * 0.6;
+float kz = pow(2, pwmres) * 0.6;
 
 float kc = 0.3;
 
-float basecutoff = 0.80;
+float basecutoff = 1.00;
 
 float demandx;
 float demandz;
@@ -183,7 +182,7 @@ void setup() {
 
     mlx.begin(); 
 
-    buzzzerok(buzzer, sound);
+    //buzzzerok(buzzer, sound);
 
     SD.begin(BUILTIN_SDCARD);
 
@@ -202,11 +201,17 @@ void setup() {
       noTone(buzzer);
       delay(5000);
     }
-    while(abs(counterL) < tick){
+    Serial.begin(9600);
+    while(abs(counter1) < 2400){
+      
             driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
             driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));
+            encoder();
+            Serial.println(counter1);
+           
     }
-
+            driver1.setSpeeds(0, 0);
+            driver2.setSpeeds(0, 0);
     
 
 }
@@ -229,9 +234,8 @@ void loop() {
             nero = "0";
             counter = 0;
         }
-        if (counter % cicliencoder == 0) {
-            encoder(); //fa gli encoder
-        }
+        encoder(); //fa gli encoder
+
 
         Left = demandx - demandz;
         Right = demandx + demandz;
@@ -307,8 +311,8 @@ void encoder() {
     }
     aLastState4 = aState4; // Updates the previous state of the outputA with the current state
 
-    counterL = (counter1 + counter2) / 2;
-    counterR = (counter3 + counter4) / 2;
+    counterL = (counter1 + counter3) / 2;
+    counterR = (counter2 + counter4) / 2;
 }
 
 void calcolaOdom() {

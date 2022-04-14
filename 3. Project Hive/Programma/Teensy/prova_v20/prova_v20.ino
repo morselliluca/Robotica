@@ -182,7 +182,7 @@ void setup() {
 
     mlx.begin(); 
 
-    //buzzzerok(buzzer, sound);
+    buzzzerok(buzzer, sound);
 
     SD.begin(BUILTIN_SDCARD);
 

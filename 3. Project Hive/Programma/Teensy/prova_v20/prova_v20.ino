@@ -223,13 +223,12 @@ void setup() {
 
 void loop() {
 
-  if(parti && digitalRead(startsw)){
+  if(parti && digitalRead(startsw) && readygo){
     while(abs(counter1) < 2400){
       
             driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
             driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));
             encoder();
-            Serial.println(counter1);
            
     }
             driver1.setSpeeds(0, 0);
@@ -262,7 +261,7 @@ void loop() {
         Left = constrain(Left, -cutoff, cutoff);
         Right = constrain(Right, -cutoff, cutoff);
 
-        if(digitalRead(startsw)){
+        if(digitalRead(startsw) && readygo){
             driver1.setSpeeds(Right, (Left * -1));
             driver2.setSpeeds(Right, (Left * -1));
         }

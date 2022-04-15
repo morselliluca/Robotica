@@ -114,6 +114,7 @@ float Right = 0;
 
 bool ctrl = true;
 bool readygo;
+bool parti = true;
 
 long previousMillis;
 long currentMillis;
@@ -214,8 +215,15 @@ void setup() {
       delay(100);
       noTone(buzzer);
       delay(5000);
-    }
-    Serial.begin(9600);
+    }    
+
+    
+
+}
+
+void loop() {
+
+  if(parti && digitalRead(startsw)){
     while(abs(counter1) < 2400){
       
             driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
@@ -226,11 +234,8 @@ void setup() {
     }
             driver1.setSpeeds(0, 0);
             driver2.setSpeeds(0, 0);
-    
-
-}
-
-void loop() {
+    parti = false;
+  }
     currentMillis = millis();
 
     if (currentMillis - previousMillis >= loopTime) { // start timed loop for everything else
@@ -264,6 +269,7 @@ void loop() {
         else{
             driver1.setSpeeds(0, 0);
             driver2.setSpeeds(0, 0);
+            parti = true;
         }
 
         counter++;

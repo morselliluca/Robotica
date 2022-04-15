@@ -33,6 +33,10 @@
 
 #define ndati 15
 
+#define morto1_led 28 //morto1
+#define morto2_led 16 //morto2
+#define morto3_led 17 //morto3
+
 Adafruit_MLX90614 mlx;
 
 DriverDkv driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
@@ -404,85 +408,85 @@ void checkPartito() {
 }
 
 void checkNero() {
-
-  if (analogRead(reflection1A) > 600 && analogRead(reflection2A) > 600) {
-    while (abs(counterL) / 3 < tick) {
-      driver1.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
-      driver2.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
-    } else if (analogRead(reflection1A) < 50 && analogRead(reflection2A) < 50) {
+  /*
+    if (analogRead(reflection1A) > 600 && analogRead(reflection2A) > 600) {
       while (abs(counterL) / 3 < tick) {
-        driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
-        driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
-      }
-      nero = "1";
+        driver1.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
+        driver2.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
+      } else if (analogRead(reflection1A) < 50 && analogRead(reflection2A) < 50) {
+        while (abs(counterL) / 3 < tick) {
+          driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
+          driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
+        }
+        nero = "1";
 
-    }
-  }
+      }
+    }*/
 }
 
-    void checkCalore() {
-      mlx.AddrSet(IR1);
-      char temp[3] = {
-        '0',
-        '0',
-        '0'
-      };
-      if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
-        temp[0] = "F";
-      }
-      mlx.AddrSet(IR2);
-      if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
-        temp[1] = "L";
-      }
-      mlx.AddrSet(IR3);
-      if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
-        temp[2] = "R";
-      }
-      calore = String(temp);
+void checkCalore() {
+  char temp[3] = {
+    '0',
+    '0',
+    '0'
+  };
+  mlx.AddrSet(IR1);
+  if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+    temp[0] = "F";
+  }
+  mlx.AddrSet(IR2);
+  if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+    temp[1] = "L";
+  }
+  mlx.AddrSet(IR3);
+  if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+    temp[2] = "R";
+  }
+  calore = String(temp);
 
+}
+
+void cagaCubi() {
+  for (int i = 0; i < 15; i++) {
+    digitalWrite(morto1_led, HIGH);
+    delay(50);
+    digitalWrite(morto2_led, HIGH);
+    delay(50);
+    digitalWrite(morto3_led, HIGH);
+    delay(50);
+    digitalWrite(morto1_led, LOW);
+    delay(50);
+    digitalWrite(morto2_led, LOW);
+    delay(50);
+    digitalWrite(morto3_led, LOW);
+    delay(50);
+  }
+
+  if (action <= 3) {
+    while (action >= 0) {
+      Servo1.write(0);
+      if (lastcube) {
+        Servo1.write(-170);
+        lastcube = false;
+      } else {
+        Servo1.write(170);
+        lastcube = true;
+      }
+      Servo1.write(0);
+      action = action - 1;
     }
+  }
 
-    void cagaCubi() {
-      for (int i = 0; i < 15; i++) {
-        digitalWrite(morto1_led, HIGH);
-        delay(50);
-        digitalWrite(morto2_led, HIGH);
-        delay(50);
-        digitalWrite(morto3_led, HIGH);
-        delay(50);
-        digitalWrite(morto1_led, LOW);
-        delay(50);
-        digitalWrite(morto2_led, LOW);
-        delay(50);
-        digitalWrite(morto3_led, LOW);
-        delay(50);
-      }
+}
 
-      if (action <= 3) {
-        while (action >= 0) {
-          Servo1.write(0);
-          if (lastcube) {
-            Servo1.write(-170);
-            lastcube = false;
-          } else {
-            Servo1.write(170);
-            lastcube = true;
-          }
-          Servo1.write(0);
-          action = action - 1;
-        }
-      }
+void buzzzerok(int buzzer, int sound) {
 
-    }
+  tone(buzzer, sound);
+  delay(100);
+  noTone(buzzer);
+  tone(buzzer, sound);
+  delay(100);
+  noTone(buzzer);
+  delay(700);
 
-    void buzzzerok(int buzzer, int sound) {
-
-      tone(buzzer, sound);
-      delay(100);
-      noTone(buzzer);
-      tone(buzzer, sound);
-      delay(100);
-      noTone(buzzer);
-      delay(700);
-
-    }
+}

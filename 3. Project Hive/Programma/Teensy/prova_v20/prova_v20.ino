@@ -8,6 +8,7 @@
 #include <SPI.h>
 #include <Adafruit_MLX90614.h>
 #include <Wire.h>
+#include <Servo.h> //Inserire la libreria Servo
 
 #define outputA1 29
 #define outputB1 30
@@ -37,6 +38,8 @@ Adafruit_MLX90614 mlx;
 DriverDkv driver1 = DriverDkv(3, 4, 2, 9, 10, 8);
 DriverDkv driver2 = DriverDkv(22, 21, 23, 14, 13, 15);
 
+Servo Servo1;
+
 int counter1 = 0;
 int aState1;
 int aLastState1;
@@ -62,7 +65,7 @@ int cicliodom = 10; //ogni 10 cicli (10ms) fa la roba di odom
 
 int counter = 0;
 
-int pwmres = 8; 
+int pwmres = 8;
 
 int cutoff = 150;
 
@@ -79,7 +82,6 @@ volatile int dcountR = 0; // diff in encoder reading for left wheel
 double x = 0.0; // Initial X position
 double y = 0.0; // Initial Y position
 double theta = 0.00; // Initial Theta angle
-
 
 char black[] = "";
 char heat[] = "";
@@ -115,45 +117,43 @@ float Right = 0;
 bool ctrl = true;
 bool readygo;
 bool parti = true;
+bool lastcube = true;
 
 long previousMillis;
 long currentMillis;
 
 void velCallback(const geometry_msgs::Twist & vel) {
-    demandx = vel.linear.x;
-    demandz = vel.angular.z;
+  demandx = vel.linear.x;
+  demandz = vel.angular.z;
 
-    demandx = constrain(demandx, -1, 1);
-    demandz = constrain(demandz, -1, 1);
-    if (demandx > 0) {
-        demandx = map(demandx, 0, 1, (kx * basecutoff), kx);
-    } else {
-        demandx = map(demandx, -1, 0, -kx, -(kx * basecutoff));
-    }
+  demandx = constrain(demandx, -1, 1);
+  demandz = constrain(demandz, -1, 1);
+  if (demandx > 0) {
+    demandx = map(demandx, 0, 1, (kx * basecutoff), kx);
+  } else {
+    demandx = map(demandx, -1, 0, -kx, -(kx * basecutoff));
+  }
 
-    if (demandz > 0) {
-        demandz = map(demandz, 0, 1, (kz * basecutoff), kz);
-    } else {
-        demandz = map(demandz, -1, 0, -kz, -(kz * basecutoff));
-    }
+  if (demandz > 0) {
+    demandz = map(demandz, 0, 1, (kz * basecutoff), kz);
+  } else {
+    demandz = map(demandz, -1, 0, -kz, -(kz * basecutoff));
+  }
 }
 
-void cubimsg(const std_msgs::String& msg)
-{
+void cubimsg(const std_msgs::String & msg) {
   String temporanea = msg.data;
   action = temporanea.toInt();
 }
 
-void redygo(const std_msgs::String& msg)
-{
+void redygo(const std_msgs::String & msg) {
   String temporanea = msg.data;
-  if(temporanea == "1"){
+  if (temporanea == "1") {
     readygo = true;
-  }
-  else{
+  } else {
     readygo = false;
   }
-  
+
 }
 
 ros::NodeHandle nh;
@@ -163,291 +163,326 @@ ros::Publisher blk("nero", & str_msg);
 ros::Publisher hot("calore", & str_msg);
 ros::Publisher str("partito", & str_msg);
 
-ros::Subscriber<std_msgs::String> sub2("cubi", &cubimsg);
-ros::Subscriber<std_msgs::String> sub3("ready", &redygo);
+ros::Subscriber < std_msgs::String > sub2("cubi", & cubimsg);
+ros::Subscriber < std_msgs::String > sub3("ready", & redygo);
 ros::Subscriber < geometry_msgs::Twist > sub1("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
 
 File dataFile;
 
 void setup() {
-    pinMode(buzzer, OUTPUT);
+  pinMode(buzzer, OUTPUT);
 
-    pinMode(outputA1, INPUT);
-    pinMode(outputB1, INPUT);
-    pinMode(outputA2, INPUT);
-    pinMode(outputB2, INPUT);
-    pinMode(outputA3, INPUT);
-    pinMode(outputB3, INPUT);
-    pinMode(outputA4, INPUT);
-    pinMode(outputB4, INPUT);
+  pinMode(outputA1, INPUT);
+  pinMode(outputB1, INPUT);
+  pinMode(outputA2, INPUT);
+  pinMode(outputB2, INPUT);
+  pinMode(outputA3, INPUT);
+  pinMode(outputB3, INPUT);
+  pinMode(outputA4, INPUT);
+  pinMode(outputB4, INPUT);
 
-    aLastState1 = digitalRead(outputA1);
-    aLastState2 = digitalRead(outputA2);
-    aLastState3 = digitalRead(outputA3);
-    aLastState4 = digitalRead(outputA4);
+  aLastState1 = digitalRead(outputA1);
+  aLastState2 = digitalRead(outputA2);
+  aLastState3 = digitalRead(outputA3);
+  aLastState4 = digitalRead(outputA4);
 
-    nh.initNode(); // Initializing node handler
-    
-    nh.subscribe(sub1);
-    nh.subscribe(sub2);
-    
-    nh.advertise(hot);
-    nh.advertise(str);
-    nh.advertise(blk);
+  Servo1.attach(7);
 
-    mlx.begin(); 
+  nh.initNode(); // Initializing node handler
 
-    buzzzerok(buzzer, sound);
+  nh.subscribe(sub1);
+  nh.subscribe(sub2);
 
-    SD.begin(BUILTIN_SDCARD);
+  nh.advertise(hot);
+  nh.advertise(str);
+  nh.advertise(blk);
 
-    //turn
-    while(!digitalRead(startsw) && !readygo){
-      tone(buzzer, sound);
-      delay(100);
-      noTone(buzzer);
-      delay(100);
-      tone(buzzer, sound);
-      delay(100);
-      noTone(buzzer);
-      delay(100);
-      tone(buzzer, sound);
-      delay(100);
-      noTone(buzzer);
-      delay(5000);
-    }    
+  mlx.begin();
 
-    
+  buzzzerok(buzzer, sound);
+
+  SD.begin(BUILTIN_SDCARD);
+
+  //turn
+  while (!digitalRead(startsw) && !readygo) {
+    tone(buzzer, sound);
+    delay(100);
+    noTone(buzzer);
+    delay(100);
+    tone(buzzer, sound);
+    delay(100);
+    noTone(buzzer);
+    delay(100);
+    tone(buzzer, sound);
+    delay(100);
+    noTone(buzzer);
+    delay(5000);
+  }
 
 }
 
 void loop() {
 
-  if(parti && digitalRead(startsw) && readygo){
-    while(abs(counter1) < 2400){
-      
-            driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
-            driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));
-            encoder();
-           
+  if (parti && digitalRead(startsw) && readygo) {
+    while (abs(counter1) < 2400) {
+
+      driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
+      driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));
+      encoder();
+
     }
-            driver1.setSpeeds(0, 0);
-            driver2.setSpeeds(0, 0);
+    driver1.setSpeeds(0, 0);
+    driver2.setSpeeds(0, 0);
     parti = false;
   }
-    currentMillis = millis();
+  currentMillis = millis();
 
-    if (currentMillis - previousMillis >= loopTime) { // start timed loop for everything else
-        previousMillis = currentMillis;
-        if (counter % cicliodom == 0) {
-            checkCalore(); //da fare
-            checkNero(); //da fare
-            calcolaOdom(); //calcola odom
-            checkPartito(); // controlla se lo switch da il parito
-            sendStuff(); //manda la roba a ros
-            cagaCubi();
-            nh.spinOnce();
-            partito = "0";
-            calore = "0";
-            nero = "0";
-            counter = 0;
-        }
-        encoder(); //fa gli encoder
-
-
-        Left = demandx - demandz;
-        Right = demandx + demandz;
-
-        Left = constrain(Left, -cutoff, cutoff);
-        Right = constrain(Right, -cutoff, cutoff);
-
-        if(digitalRead(startsw) && readygo){
-            driver1.setSpeeds(Right, (Left * -1));
-            driver2.setSpeeds(Right, (Left * -1));
-        }
-        else{
-            driver1.setSpeeds(0, 0);
-            driver2.setSpeeds(0, 0);
-            parti = true;
-        }
-
-        counter++;
-
+  if (currentMillis - previousMillis >= loopTime) { // start timed loop for everything else
+    previousMillis = currentMillis;
+    if (counter % cicliodom == 0) {
+      checkCalore(); //da fare
+      checkNero(); //da fare
+      calcolaOdom(); //calcola odom
+      checkPartito(); // controlla se lo switch da il parito
+      sendStuff(); //manda la roba a ros
+      cagaCubi();
+      nh.spinOnce();
+      partito = "0";
+      calore = "0";
+      nero = "0";
+      counter = 0;
     }
+    encoder(); //fa gli encoder
+
+    Left = demandx - demandz;
+    Right = demandx + demandz;
+
+    Left = constrain(Left, -cutoff, cutoff);
+    Right = constrain(Right, -cutoff, cutoff);
+
+    if (digitalRead(startsw) && readygo) {
+      driver1.setSpeeds(Right, (Left * -1));
+      driver2.setSpeeds(Right, (Left * -1));
+    } else {
+      driver1.setSpeeds(0, 0);
+      driver2.setSpeeds(0, 0);
+      parti = true;
+    }
+
+    counter++;
+
+  }
 
 }
 
 void encoder() {
-    aState1 = digitalRead(outputA1); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState1 != aLastState1) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB1) != aState1) {
-            counter1++;
-        } else {
-            counter1--;
-        }
-
+  aState1 = digitalRead(outputA1); // Reads the "current" state of the outputA
+  // If the previous and the current state of the outputA are different, that means a Pulse has occured
+  if (aState1 != aLastState1) {
+    // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
+    if (digitalRead(outputB1) != aState1) {
+      counter1++;
+    } else {
+      counter1--;
     }
-    aLastState1 = aState1; // Updates the previous state of the outputA with the current state
 
-    aState2 = digitalRead(outputA2); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState2 != aLastState2) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB2) != aState2) {
-            counter2--;
-        } else {
-            counter2++;
-        }
+  }
+  aLastState1 = aState1; // Updates the previous state of the outputA with the current state
 
+  aState2 = digitalRead(outputA2); // Reads the "current" state of the outputA
+  // If the previous and the current state of the outputA are different, that means a Pulse has occured
+  if (aState2 != aLastState2) {
+    // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
+    if (digitalRead(outputB2) != aState2) {
+      counter2--;
+    } else {
+      counter2++;
     }
-    aLastState2 = aState2; // Updates the previous state of the outputA with the current state
 
-    aState3 = digitalRead(outputA3); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState3 != aLastState3) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB3) != aState3) {
-            counter3--;
-        } else {
-            counter3++;
-        }
+  }
+  aLastState2 = aState2; // Updates the previous state of the outputA with the current state
 
+  aState3 = digitalRead(outputA3); // Reads the "current" state of the outputA
+  // If the previous and the current state of the outputA are different, that means a Pulse has occured
+  if (aState3 != aLastState3) {
+    // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
+    if (digitalRead(outputB3) != aState3) {
+      counter3--;
+    } else {
+      counter3++;
     }
-    aLastState3 = aState3; // Updates the previous state of the outputA with the current state
 
-    aState4 = digitalRead(outputA4); // Reads the "current" state of the outputA
-    // If the previous and the current state of the outputA are different, that means a Pulse has occured
-    if (aState4 != aLastState4) {
-        // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-        if (digitalRead(outputB4) != aState4) {
-            counter4++;
-        } else {
-            counter4--;
-        }
+  }
+  aLastState3 = aState3; // Updates the previous state of the outputA with the current state
 
+  aState4 = digitalRead(outputA4); // Reads the "current" state of the outputA
+  // If the previous and the current state of the outputA are different, that means a Pulse has occured
+  if (aState4 != aLastState4) {
+    // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
+    if (digitalRead(outputB4) != aState4) {
+      counter4++;
+    } else {
+      counter4--;
     }
-    aLastState4 = aState4; // Updates the previous state of the outputA with the current state
 
-    counterL = (counter1 + counter3) / 2;
-    counterR = (counter2 + counter4) / 2;
+  }
+  aLastState4 = aState4; // Updates the previous state of the outputA with the current state
+
+  counterL = (counter1 + counter3) / 2;
+  counterR = (counter2 + counter4) / 2;
 }
 
 void calcolaOdom() {
-    dcountL = counterL - dcountL;
-    dcountR = counterR - dcountR;
+  dcountL = counterL - dcountL;
+  dcountR = counterR - dcountR;
 
-    templ = counterL;
-    tempR = counterR;
+  templ = counterL;
+  tempR = counterR;
 
-    dL = 2 * PI * R * (dcountL / tick); // Dl = 2*PI*R*(lefttick/totaltick)
-    dR = 2 * PI * R * (dcountR / tick); // Dr = 2*PI*R*(righttick/totaltick)
-    dC = (dL + dR) / 2;
+  dL = 2 * PI * R * (dcountL / tick); // Dl = 2*PI*R*(lefttick/totaltick)
+  dR = 2 * PI * R * (dcountR / tick); // Dr = 2*PI*R*(righttick/totaltick)
+  dC = (dL + dR) / 2;
 
-    x = x + (dC * (cos(theta))); // calculates new X position based on wheel revolution
-    y = y + (dC * (sin(theta))); // calculates new Y position based on wheel revolution
-    theta = theta + ((dR - dL) / len); // calculates new theta angle based on encoder values
-    if (theta > PI)
-        theta = -PI;
+  x = x + (dC * (cos(theta))); // calculates new X position based on wheel revolution
+  y = y + (dC * (sin(theta))); // calculates new Y position based on wheel revolution
+  theta = theta + ((dR - dL) / len); // calculates new theta angle based on encoder values
+  if (theta > PI)
+    theta = -PI;
 }
 
 void sendStuff() {
-    //dataFile = SD.open("datalog.txt", FILE_WRITE);
-    data[0] = String(x);
-    data[1] = String(y);
-    data[2] = String(theta);
-    data[3] = String(Left);
-    data[4] = String(Right);
-    data[5] = String(dL / 0.01);
-    data[6] = String(dR / 0.01);
-    mlx.AddrSet(IR1);
-    data[7] = String(mlx.readAmbientTempC());
-    data[8] = String(mlx.readObjectTempC());
-    mlx.AddrSet(IR2);
-    data[9] = String(mlx.readAmbientTempC());
-    data[10] = String(mlx.readObjectTempC());
-    mlx.AddrSet(IR3);
-    data[11] = String(mlx.readAmbientTempC());
-    data[12] = String(mlx.readObjectTempC());
-    data[13] = String(action);
-    data[14] = String(millis());
+  //dataFile = SD.open("datalog.txt", FILE_WRITE);
+  data[0] = String(x);
+  data[1] = String(y);
+  data[2] = String(theta);
+  data[3] = String(Left);
+  data[4] = String(Right);
+  data[5] = String(dL / 0.01);
+  data[6] = String(dR / 0.01);
+  mlx.AddrSet(IR1);
+  data[7] = String(mlx.readAmbientTempC());
+  data[8] = String(mlx.readObjectTempC());
+  mlx.AddrSet(IR2);
+  data[9] = String(mlx.readAmbientTempC());
+  data[10] = String(mlx.readObjectTempC());
+  mlx.AddrSet(IR3);
+  data[11] = String(mlx.readAmbientTempC());
+  data[12] = String(mlx.readObjectTempC());
+  data[13] = String(action);
+  data[14] = String(millis());
 
-    for(int i = 0; i < ndati - 1; i++){
-      dataFile.print(data[i]);
-      dataFile.print(",");
-    }
-    dataFile.print(data[ndati - 1]);
-    dataFile.println();
-    dataFile.close();
-    
-    nero.toCharArray(black, (nero.length() + 1));
-    calore.toCharArray(heat, (calore.length() + 1));
-    partito.toCharArray(starting, (partito.length() + 1));
+  for (int i = 0; i < ndati - 1; i++) {
+    dataFile.print(data[i]);
+    dataFile.print(",");
+  }
+  dataFile.print(data[ndati - 1]);
+  dataFile.println();
+  dataFile.close();
 
-    //mando i messaggi a ros
-    str_msg.data = black;
-    blk.publish( & str_msg);
-    str_msg.data = heat;
-    hot.publish( & str_msg);
-    str_msg.data = starting;
-    str.publish( & str_msg);
+  nero.toCharArray(black, (nero.length() + 1));
+  calore.toCharArray(heat, (calore.length() + 1));
+  partito.toCharArray(starting, (partito.length() + 1));
 
-    dcountL = templ;
-    dcountR = tempR;
+  //mando i messaggi a ros
+  str_msg.data = black;
+  blk.publish( & str_msg);
+  str_msg.data = heat;
+  hot.publish( & str_msg);
+  str_msg.data = starting;
+  str.publish( & str_msg);
+
+  dcountL = templ;
+  dcountR = tempR;
 }
 
 void checkPartito() {
-    if (digitalRead(startsw)) {
-        partito = "0";
-    } else {
-        partito = "1";
-    }
+  if (digitalRead(startsw)) {
+    partito = "0";
+  } else {
+    partito = "1";
+  }
 }
 
 void checkNero() {
-  /*
-    if(){
-          while(abs(counterL)/3 < tick){
-            driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
-            driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
+
+  if (analogRead(reflection1A) > 600 && analogRead(reflection2A) > 600) {
+    while (abs(counterL) / 3 < tick) {
+      driver1.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
+      driver2.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
+    } else if (analogRead(reflection1A) < 50 && analogRead(reflection2A) < 50) {
+      while (abs(counterL) / 3 < tick) {
+        driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
+        driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
+      }
+      nero = "1";
+
+    }
+  }
+}
+
+    void checkCalore() {
+      mlx.AddrSet(IR1);
+      char temp[3] = {
+        '0',
+        '0',
+        '0'
+      };
+      if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+        temp[0] = "F";
+      }
+      mlx.AddrSet(IR2);
+      if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+        temp[1] = "L";
+      }
+      mlx.AddrSet(IR3);
+      if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+        temp[2] = "R";
+      }
+      calore = String(temp);
+
+    }
+
+    void cagaCubi() {
+      for (int i = 0; i < 15; i++) {
+        digitalWrite(morto1_led, HIGH);
+        delay(50);
+        digitalWrite(morto2_led, HIGH);
+        delay(50);
+        digitalWrite(morto3_led, HIGH);
+        delay(50);
+        digitalWrite(morto1_led, LOW);
+        delay(50);
+        digitalWrite(morto2_led, LOW);
+        delay(50);
+        digitalWrite(morto3_led, LOW);
+        delay(50);
+      }
+
+      if (action <= 3) {
+        while (action >= 0) {
+          Servo1.write(0);
+          if (lastcube) {
+            Servo1.write(-170);
+            lastcube = false;
+          } else {
+            Servo1.write(170);
+            lastcube = true;
           }
-    nero = "1";
-    }*/
-}
+          Servo1.write(0);
+          action = action - 1;
+        }
+      }
 
-void checkCalore() {
-  mlx.AddrSet(IR1); 
-  char temp[3] = {'0','0','0'};
-  if(mlx.readAmbientTempC() < mlx.readObjectTempC() * kc){
-    temp[0] = "F";
-  }
-  mlx.AddrSet(IR2);
-  if(mlx.readAmbientTempC() < mlx.readObjectTempC() * kc){
-    temp[1] = "L";
-  }
-  mlx.AddrSet(IR3);
-  if(mlx.readAmbientTempC() < mlx.readObjectTempC() * kc){
-    temp[2] = "R";
-  }
-  calore = String(temp);
+    }
 
-}
+    void buzzzerok(int buzzer, int sound) {
 
-void cagaCubi(){
-  while(action >= 0){
-    //gira
-  }
-}
+      tone(buzzer, sound);
+      delay(100);
+      noTone(buzzer);
+      tone(buzzer, sound);
+      delay(100);
+      noTone(buzzer);
+      delay(700);
 
-void buzzzerok(int buzzer, int sound) {
-
-    tone(buzzer, sound);
-    delay(100);
-    noTone(buzzer);
-    tone(buzzer, sound);
-    delay(100);
-    noTone(buzzer);
-    delay(700);
-
-}
+    }

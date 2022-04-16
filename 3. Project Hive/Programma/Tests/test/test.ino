@@ -10,6 +10,10 @@ Adafruit_MLX90614 mlx;
 
 void setup() {
   Serial.begin(9600);
+  mlx.AddrSet(IR1);
+  mlx.begin(); 
+  mlx.AddrSet(IR3);
+  mlx.begin(); 
 
 }
 

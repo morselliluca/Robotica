@@ -16,13 +16,21 @@ void setup() {
 void loop() {
   mlx.AddrSet(IR1);
   Serial.println("calore");
-  Serial.println(String(mlx.readAmbientTempC() - mlx.readObjectTempC()));
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
+  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
     mlx.AddrSet(IR2);
-    Serial.println("calore");
-  Serial.println(String(mlx.readAmbientTempC() - mlx.readObjectTempC()));
+    Serial.println("calore");Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
+  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
     mlx.AddrSet(IR3);
     Serial.println("calore");
-  Serial.println(String(mlx.readAmbientTempC() - mlx.readObjectTempC()));
+ Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
+  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
   Serial.println("nero");
   Serial.println(analogRead(reflection1A));
   Serial.println("nero");

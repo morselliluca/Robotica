@@ -431,15 +431,15 @@ void checkCalore() {
     '0'
   };
   mlx.AddrSet(IR1);
-  if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
     temp[0] = "F";
   }
   mlx.AddrSet(IR2);
-  if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
     temp[1] = "L";
   }
   mlx.AddrSet(IR3);
-  if (mlx.readAmbientTempC() < mlx.readObjectTempC() * kc) {
+  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
     temp[2] = "R";
   }
   calore = String(temp);
@@ -447,7 +447,8 @@ void checkCalore() {
 }
 
 void cagaCubi() {
-  for (int i = 0; i < 15; i++) {
+  if(action != 0){
+    for (int i = 0; i < 15; i++) {
     digitalWrite(morto1_led, HIGH);
     delay(50);
     digitalWrite(morto2_led, HIGH);
@@ -476,7 +477,12 @@ void cagaCubi() {
       action = action - 1;
     }
   }
+  else{
+    actiion = 0;
+  }
 
+  }
+  
 }
 
 void buzzzerok(int buzzer, int sound) {

@@ -1,4 +1,5 @@
 #include <Adafruit_MLX90614.h>
+#include <Wire.h>
 
 Adafruit_MLX90614 mlx;
 

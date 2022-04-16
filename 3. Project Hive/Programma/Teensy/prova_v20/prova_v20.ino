@@ -196,6 +196,7 @@ void setup() {
 
   nh.subscribe(sub1);
   nh.subscribe(sub2);
+  nh.subscribe(sub3);
 
   nh.advertise(hot);
   nh.advertise(str);
@@ -220,6 +221,18 @@ void setup() {
     tone(buzzer, sound);
     delay(100);
     noTone(buzzer);
+    digitalWrite(morto1_led, HIGH);
+    delay(50);
+    digitalWrite(morto2_led, HIGH);
+    delay(50);
+    digitalWrite(morto3_led, HIGH);
+    delay(50);
+    digitalWrite(morto1_led, LOW);
+    delay(50);
+    digitalWrite(morto2_led, LOW);
+    delay(50);
+    digitalWrite(morto3_led, LOW);
+    delay(50);
     delay(5000);
   }
 
@@ -449,6 +462,8 @@ void checkCalore() {
 void cagaCubi() {
   /*
   if(action != 0){
+    driver1.setSpeeds(0, 0);
+    driver2.setSpeeds(0, 0);
     for (int i = 0; i < 15; i++) {
     digitalWrite(morto1_led, HIGH);
     delay(50);

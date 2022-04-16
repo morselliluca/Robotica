@@ -195,8 +195,8 @@ void setup() {
   nh.initNode(); // Initializing node handler
 
   nh.subscribe(sub1);
-  nh.subscribe(sub2);
-  nh.subscribe(sub3);
+  //nh.subscribe(sub2);
+  //nh.subscribe(sub3);
 
   nh.advertise(hot);
   nh.advertise(str);

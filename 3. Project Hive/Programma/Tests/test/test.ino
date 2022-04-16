@@ -10,27 +10,25 @@ Adafruit_MLX90614 mlx;
 
 void setup() {
   Serial.begin(9600);
-  mlx.AddrSet(IR1);
-  mlx.begin(); 
-  mlx.AddrSet(IR3);
   mlx.begin(); 
 
 }
 
 void loop() {
-  mlx.AddrSet(IR1);
-  Serial.println("calore");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
+  mlx.AddrSet(IR1); 
+  Serial.print("IR1: ");
   Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
   Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
-    mlx.AddrSet(IR3);
-    Serial.println("calore");
- Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
-  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
+  mlx.temp1 = mlx.readObjectTempF();
+  delay(250);
+  mlx.AddrSet(IR3); 
+  Serial.print("IR3: ");
   Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
   Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
-  Serial.println("nero");
+  mlx.temp3 = mlx.readObjectTempF();
+  delay(250);
+  Serial.println();
+  delay(1000);
   Serial.println(analogRead(reflection1A));
   Serial.println("nero");
   Serial.println(analogRead(reflection2A));

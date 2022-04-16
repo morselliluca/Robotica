@@ -191,12 +191,12 @@ void setup() {
   aLastState4 = digitalRead(outputA4);
 
   Servo1.attach(7);
-
+  Serial.begin(9600);
   nh.initNode(); // Initializing node handler
 
   nh.subscribe(sub1);
-  //nh.subscribe(sub2);
-  //nh.subscribe(sub3);
+  nh.subscribe(sub2);
+  nh.subscribe(sub3);
 
   nh.advertise(hot);
   nh.advertise(str);

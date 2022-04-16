@@ -17,14 +17,14 @@ void setup() {
 void loop() {
   mlx.AddrSet(IR1); 
   Serial.print("IR1: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
-  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
   mlx.temp1 = mlx.readObjectTempF();
   delay(250);
   mlx.AddrSet(IR3); 
   Serial.print("IR3: ");
-  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempF()); 
-  Serial.print("*F\tObject = "); Serial.print(mlx.readObjectTempF()); Serial.println("*F");
+  Serial.print("Ambient = "); Serial.print(mlx.readAmbientTempC()); 
+  Serial.print("*C\tObject = "); Serial.print(mlx.readObjectTempC()); Serial.println("*C");
   mlx.temp3 = mlx.readObjectTempF();
   delay(250);
   Serial.println();

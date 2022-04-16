@@ -10,6 +10,9 @@
 #include <Wire.h>
 #include <Servo.h> //Inserire la libreria Servo
 
+ros::NodeHandle nh;
+std_msgs::String str_msg;
+
 #define outputA1 29
 #define outputB1 30
 #define outputA2 31
@@ -159,9 +162,6 @@ void redygo(const std_msgs::String & msg) {
   }
 
 }
-
-ros::NodeHandle nh;
-std_msgs::String str_msg;
 
 ros::Publisher blk("nero", & str_msg);
 ros::Publisher hot("calore", & str_msg);

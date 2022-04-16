@@ -447,6 +447,7 @@ void checkCalore() {
 }
 
 void cagaCubi() {
+  /*
   if(action != 0){
     for (int i = 0; i < 15; i++) {
     digitalWrite(morto1_led, HIGH);
@@ -481,7 +482,7 @@ void cagaCubi() {
     actiion = 0;
   }
 
-  }
+  }*/
   
 }
 

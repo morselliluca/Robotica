@@ -94,12 +94,8 @@ double x = 0.0; // Initial X position
 double y = 0.0; // Initial Y position
 double theta = 0.00; // Initial Theta angle
 
-char black[] = "";
-char heat[] = "";
-char starting[] = "";
-
 char nero[1] = '0';
-String calore = "0";
+char calore[1] = '0';
 char partito[1] = '0';
 
 String data[ndati];
@@ -263,12 +259,11 @@ void loop() {
       checkPartito(); // controlla se lo switch da il parito
       sendStuff(); //manda la roba a ros
       cagaCubi();
-      calore.toCharArray(heat, (calore.length() + 1));
 
       //mando i messaggi a ros
       str_msg.data = nero;
       blk.publish( & str_msg);
-      str_msg.data = heat;
+      str_msg.data = calore;
       hot.publish( & str_msg);
       str_msg.data = partito;
       str.publish( & str_msg);
@@ -439,25 +434,19 @@ void checkNero() {
     
 
 void checkCalore() {
-  char temp[3] = {
-    '0',
-    '0',
-    '0'
-  };
+
   mlx.AddrSet(IR1);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[0] = "F";
+    calore[0] = 'F';
   }
   mlx.AddrSet(IR2);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[1] = "L";
+    calore[0] = 'L';
   }
   mlx.AddrSet(IR3);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[2] = "R";
+    calore[0] = 'R';
   }
-  calore = String(temp);
-
 }
 
 void cagaCubi() {

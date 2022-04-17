@@ -32,7 +32,7 @@ ros::Publisher str("partito", & str_msg);
 #define reflection1D 11 //riflesso digitale 1
 #define reflection2D 12 //riflesso digitale 2
 
-#define startsw 37 //start switch
+#define startsw 38 //start switch
 
 #define IR1 0x5C //indirizzo ir davanti
 #define IR2 0x5A //indirizzo ir sinistra
@@ -100,7 +100,7 @@ char starting[] = "";
 
 String nero = "0";
 String calore = "0";
-String partito = "0";
+char partito[1] = '0';
 
 String data[ndati];
 
@@ -263,10 +263,19 @@ void loop() {
       checkPartito(); // controlla se lo switch da il parito
       sendStuff(); //manda la roba a ros
       cagaCubi();
+      nero.toCharArray(black, (nero.length() + 1));
+      calore.toCharArray(heat, (calore.length() + 1));
+
+      //mando i messaggi a ros
+      str_msg.data = black;
+      blk.publish( & str_msg);
+      str_msg.data = heat;
+      hot.publish( & str_msg);
+      str_msg.data = partito;
+      str.publish( & str_msg);
+
       nh.spinOnce();
-      partito = "0";
-      calore = "0";
-      nero = "0";
+
       counter = 0;
     }
     encoder(); //fa gli encoder
@@ -395,28 +404,16 @@ void sendStuff() {
   dataFile.print(data[ndati - 1]);
   dataFile.println();
   dataFile.close();
-
-  nero.toCharArray(black, (nero.length() + 1));
-  calore.toCharArray(heat, (calore.length() + 1));
-  partito.toCharArray(starting, (partito.length() + 1));
-
-  //mando i messaggi a ros
-  str_msg.data = black;
-  blk.publish( & str_msg);
-  str_msg.data = heat;
-  hot.publish( & str_msg);
-  str_msg.data = starting;
-  str.publish( & str_msg);
-
+  
   dcountL = templ;
   dcountR = tempR;
 }
 
 void checkPartito() {
   if (digitalRead(startsw)) {
-    partito = "0";
+    partito = '0';
   } else {
-    partito = "1";
+    partito = '1';
   }
 }
 

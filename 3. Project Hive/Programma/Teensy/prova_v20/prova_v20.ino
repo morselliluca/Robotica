@@ -417,21 +417,26 @@ void checkPartito() {
 }
 
 void checkNero() {
-  /*
-    if (analogRead(reflection1A) > 600 && analogRead(reflection2A) > 600) {
+    if (analogRead(reflection1A) > 53 && analogRead(reflection2A) > 53) {
+      tone(buzzer, sound);
+      delay(100);
+      noTone(buzzer);
       while (abs(counterL) / 3 < tick) {
         driver1.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
         driver2.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
-      } else if (analogRead(reflection1A) < 50 && analogRead(reflection2A) < 50) {
+        nero = '1';
+      }
+      } else if (analogRead(reflection1A) < 35 && analogRead(reflection2A) < 35) {
+        tone(buzzer, sound);
+        delay(100);
+        noTone(buzzer);
         while (abs(counterL) / 3 < tick) {
           driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
           driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
         }
-        nero = '1';
-
       }
-    }*/
-}
+    }
+    
 
 void checkCalore() {
   char temp[3] = {

@@ -98,9 +98,9 @@ char black[] = "";
 char heat[] = "";
 char starting[] = "";
 
-char nero[1] = '0';
+String nero = "0";
 String calore = "0";
-char partito[1] = '0';
+String partito = "0";
 
 String data[ndati];
 
@@ -194,9 +194,9 @@ void setup() {
   
   nh.initNode(); // Initializing node handler
 
-  nh.subscribe(sub1);
-  nh.subscribe(sub2);
-  nh.subscribe(sub3);
+  nh.subscribe(subcubi);
+  nh.subscribe(subgo);
+  nh.subscribe(subvel);
 
   nh.advertise(hot);
   nh.advertise(str);
@@ -266,11 +266,11 @@ void loop() {
       calore.toCharArray(heat, (calore.length() + 1));
 
       //mando i messaggi a ros
-      str_msg.data = nero;
+      str_msg.data = nero.c_str();
       blk.publish( & str_msg);
       str_msg.data = heat;
       hot.publish( & str_msg);
-      str_msg.data = partito;
+      str_msg.data = partito.c_str();
       str.publish( & str_msg);
 
       nh.spinOnce();
@@ -410,9 +410,9 @@ void sendStuff() {
 
 void checkPartito() {
   if (digitalRead(startsw)) {
-    partito = '0';
+    partito = "0";
   } else {
-    partito = '1';
+    partito = "1";
   }
 }
 
@@ -424,7 +424,7 @@ void checkNero() {
       while (abs(counterL) / 3 < tick) {
         driver1.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
         driver2.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
-        nero = '1';
+        nero = "1";
       }
       } else if (analogRead(reflection1A) < 35 && analogRead(reflection2A) < 35) {
         tone(buzzer, sound);
@@ -446,15 +446,15 @@ void checkCalore() {
   };
   mlx.AddrSet(IR1);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[0] = "F";
+    temp[0] = 'F';
   }
   mlx.AddrSet(IR2);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[1] = "L";
+    temp[1] = 'L';
   }
   mlx.AddrSet(IR3);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[2] = "R";
+    temp[2] = 'R';
   }
   calore = String(temp);
 
@@ -494,7 +494,7 @@ void cagaCubi() {
     }
   }
   else{
-    actiion = 0;
+    action = 0;
   }
 
   }

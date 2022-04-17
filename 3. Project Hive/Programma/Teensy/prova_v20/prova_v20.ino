@@ -98,7 +98,7 @@ char black[] = "";
 char heat[] = "";
 char starting[] = "";
 
-String nero = "0";
+char nero[1] = '0';
 String calore = "0";
 char partito[1] = '0';
 
@@ -194,9 +194,9 @@ void setup() {
   
   nh.initNode(); // Initializing node handler
 
-  nh.subscribe(subcubi);
-  nh.subscribe(subgo);
-  nh.subscribe(subvel);
+  nh.subscribe(sub1);
+  nh.subscribe(sub2);
+  nh.subscribe(sub3);
 
   nh.advertise(hot);
   nh.advertise(str);
@@ -263,11 +263,10 @@ void loop() {
       checkPartito(); // controlla se lo switch da il parito
       sendStuff(); //manda la roba a ros
       cagaCubi();
-      nero.toCharArray(black, (nero.length() + 1));
       calore.toCharArray(heat, (calore.length() + 1));
 
       //mando i messaggi a ros
-      str_msg.data = black;
+      str_msg.data = nero;
       blk.publish( & str_msg);
       str_msg.data = heat;
       hot.publish( & str_msg);
@@ -428,7 +427,7 @@ void checkNero() {
           driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
           driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
         }
-        nero = "1";
+        nero = '1';
 
       }
     }*/

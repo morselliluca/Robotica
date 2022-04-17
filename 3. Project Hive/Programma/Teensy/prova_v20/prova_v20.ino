@@ -13,9 +13,9 @@
 ros::NodeHandle nh;
 std_msgs::String str_msg;
 
-ros::Publisher blk("nero", & str_msg);
+/*ros::Publisher blk("nero", & str_msg);
 ros::Publisher hot("calore", & str_msg);
-ros::Publisher str("partito", & str_msg);
+ros::Publisher str("partito", & str_msg);*/
 
 #define outputA1 29
 #define outputB1 30
@@ -167,9 +167,25 @@ void redygo(const std_msgs::String & msg) {
 
 }
 
+<<<<<<< HEAD
 ros::Subscriber < std_msgs::String > subcubi("cubi", & cubimsg);
 ros::Subscriber < std_msgs::String > subgo("ready", & redygo);
 ros::Subscriber < geometry_msgs::Twist > subvel("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
+=======
+//<<<<<<< HEAD
+ros::Subscriber < std_msgs::String > sub2("cubetti", & cubimsg);
+ros::Subscriber < std_msgs::String > sub3("partenza", & redygo);
+ros::Subscriber < geometry_msgs::Twist > sub1("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
+/*=======*/
+ros::Publisher blk("nero", & str_msg);
+ros::Publisher hot("calore", & str_msg);
+ros::Publisher str("partito", & str_msg);
+
+/*ros::Subscriber < std_msgs::String > sub2("cubi", & cubimsg);
+ros::Subscriber < std_msgs::String > sub3("pronto", & redygo);
+ros::Subscriber < geometry_msgs::Twist > sub1("cmd_vel", & velCallback); //create a subscriber for ROS cmd_vel topic
+>>>>>>> de6a61d6bb424d201c7ae59078454a4154efd9aa*/
+>>>>>>> 1b53f749741c286b74f0d74d6f889a5c61a784b9
 
 File dataFile;
 

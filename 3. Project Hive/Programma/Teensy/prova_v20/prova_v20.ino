@@ -94,19 +94,9 @@ double x = 0.0; // Initial X position
 double y = 0.0; // Initial Y position
 double theta = 0.00; // Initial Theta angle
 
-<<<<<<< HEAD
-char nero[1] = '0';
-char calore[1] = '0';
-char partito[1] = '0';
-=======
-char black[] = "";
-char heat[] = "";
-char starting[] = "";
-
-String nero = "0";
-String calore = "0";
-String partito = "0";
->>>>>>> 072c01ee5018ada2e7eb11f51daf9861585c4028
+char nero[1];
+char calore[1];
+char partito[1];
 
 String data[ndati];
 
@@ -200,9 +190,9 @@ void setup() {
   
   nh.initNode(); // Initializing node handler
 
-  nh.subscribe(subcubi);
   nh.subscribe(subgo);
   nh.subscribe(subvel);
+  nh.subscribe(subcubi);
 
   nh.advertise(hot);
   nh.advertise(str);
@@ -271,11 +261,11 @@ void loop() {
       cagaCubi();
 
       //mando i messaggi a ros
-      str_msg.data = nero.c_str();
+      str_msg.data = nero;
       blk.publish( & str_msg);
       str_msg.data = calore;
       hot.publish( & str_msg);
-      str_msg.data = partito.c_str();
+      str_msg.data = partito;
       str.publish( & str_msg);
 
       nh.spinOnce();
@@ -415,9 +405,9 @@ void sendStuff() {
 
 void checkPartito() {
   if (digitalRead(startsw)) {
-    partito = "0";
+    partito[0] = '0';
   } else {
-    partito = "1";
+    partito[0] = '1';
   }
 }
 
@@ -429,7 +419,7 @@ void checkNero() {
       while (abs(counterL) / 3 < tick) {
         driver1.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
         driver2.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
-        nero = "1";
+        nero[0] = '1';
       }
       } else if (analogRead(reflection1A) < 35 && analogRead(reflection2A) < 35) {
         tone(buzzer, sound);
@@ -447,7 +437,6 @@ void checkCalore() {
 
   mlx.AddrSet(IR1);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-<<<<<<< HEAD
     calore[0] = 'F';
   }
   mlx.AddrSet(IR2);
@@ -457,17 +446,6 @@ void checkCalore() {
   mlx.AddrSet(IR3);
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
     calore[0] = 'R';
-=======
-    temp[0] = 'F';
-  }
-  mlx.AddrSet(IR2);
-  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[1] = 'L';
-  }
-  mlx.AddrSet(IR3);
-  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
-    temp[2] = 'R';
->>>>>>> 072c01ee5018ada2e7eb11f51daf9861585c4028
   }
 }
 

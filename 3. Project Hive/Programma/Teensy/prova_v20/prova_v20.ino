@@ -461,7 +461,6 @@ void checkCalore() {
 }
 
 void cagaCubi() {
-  /*
   if(action != 0){
     driver1.setSpeeds(0, 0);
     driver2.setSpeeds(0, 0);
@@ -498,7 +497,7 @@ void cagaCubi() {
     actiion = 0;
   }
 
-  }*/
+  }
   
 }
 

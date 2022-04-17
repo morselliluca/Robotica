@@ -438,7 +438,6 @@ void checkNero() {
 }
 
 void checkCalore() {
-  /*
   char temp[3] = {
     '0',
     '0',
@@ -456,7 +455,7 @@ void checkCalore() {
   if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
     temp[2] = "R";
   }
-  calore = String(temp);*/
+  calore = String(temp);
 
 }
 

@@ -13,6 +13,10 @@
 ros::NodeHandle nh;
 std_msgs::String str_msg;
 
+ros::Publisher blk("nero", & str_msg);
+ros::Publisher hot("calore", & str_msg);
+ros::Publisher str("partito", & str_msg);
+
 #define outputA1 29
 #define outputB1 30
 #define outputA2 31
@@ -163,12 +167,8 @@ void redygo(const std_msgs::String & msg) {
 
 }
 
-ros::Publisher blk("nero", & str_msg);
-ros::Publisher hot("calore", & str_msg);
-ros::Publisher str("partito", & str_msg);
-
-ros::Subscriber < std_msgs::String > sub2("cubi", & cubimsg);
-ros::Subscriber < std_msgs::String > sub3("ready", & redygo);
+ros::Subscriber < std_msgs::String > sub2("cubetti", & cubimsg);
+ros::Subscriber < std_msgs::String > sub3("partenza", & redygo);
 ros::Subscriber < geometry_msgs::Twist > sub1("cmd_vel", velCallback); //create a subscriber for ROS cmd_vel topic
 
 File dataFile;

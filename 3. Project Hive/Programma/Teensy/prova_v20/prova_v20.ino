@@ -404,7 +404,7 @@ void sendStuff() {
 }
 
 void checkPartito() {
-  if (digitalRead(startsw)) {
+  if (!digitalRead(startsw)) {
     partito[0] = '0';
   } else {
     partito[0] = '1';

@@ -237,10 +237,10 @@ void setup() {
 void loop() {
 
   if (parti && digitalRead(startsw) && readygo) {
-    counter1 = 0
-    counter2 = 0
-    counter3 = 0
-    counter4 = 0
+    counter1 = 0;
+    counter2 = 0;
+    counter3 = 0;
+    counter4 = 0;
     while (abs(counter1) < 2000) {
 
       driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));

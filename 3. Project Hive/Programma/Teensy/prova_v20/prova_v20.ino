@@ -137,13 +137,13 @@ void velCallback(const geometry_msgs::Twist & vel) {
   demandz = constrain(demandz, -1, 1);
   if (demandx > 0) {
     demandx = map(demandx, 0, 1, (kx * basecutoff), kx);
-  } else if (demandx < 0) {
+  } else {
     demandx = map(demandx, -1, 0, -kx, -(kx * basecutoff));
   }
 
   if (demandz > 0) {
     demandz = map(demandz, 0, 1, (kz * basecutoff), kz);
-  } else if (demandz < 0) {
+  } else {
     demandz = map(demandz, -1, 0, -kz, -(kz * basecutoff));
   }
 }
@@ -237,16 +237,16 @@ void setup() {
 void loop() {
 
   if (parti && digitalRead(startsw) && readygo) {
-    counter1 = 0;
-    counter2 = 0;
-    counter3 = 0;
-    counter4 = 0;
     while (abs(counter1) < 2000) {
 
       driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
       driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));
       encoder();
     }
+    counter1 = 0
+    counter2 = 0
+    counter3 = 0
+    counter4 = 0
     driver1.setSpeeds(0, 0);
     driver2.setSpeeds(0, 0);
     parti = false;

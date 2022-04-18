@@ -286,6 +286,8 @@ void loop() {
     } else {
       driver1.setSpeeds(0, 0);
       driver2.setSpeeds(0, 0);
+      demandx = 0;
+      demandz = 0;
       parti = true;
     }
 

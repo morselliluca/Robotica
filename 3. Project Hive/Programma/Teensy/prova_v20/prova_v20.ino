@@ -417,7 +417,7 @@ void checkPartito() {
 }
 
 void checkNero() {
-    if (analogRead(reflection1A) > 53 && analogRead(reflection2A) > 53) {
+    /*if (analogRead(reflection1A) > 53 && analogRead(reflection2A) > 53) {
       tone(buzzer, sound);
       delay(100);
       noTone(buzzer);
@@ -434,7 +434,7 @@ void checkNero() {
           driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
           driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
         }
-      }
+      }*/
     }
     
 

@@ -1,0 +1,2 @@
+goalFinder:ldlidar_stl_ros:localization_data_pub
+-DCATKIN_DEVEL_PREFIX=/home/ubuntu/lidar_ws/devel -DCMAKE_INSTALL_PREFIX=/home/ubuntu/lidar_ws/install -G Unix Makefiles

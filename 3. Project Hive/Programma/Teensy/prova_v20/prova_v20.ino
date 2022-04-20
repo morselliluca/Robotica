@@ -206,6 +206,7 @@ void setup() {
 
   //turn
   while (!digitalRead(startsw) && !readygo) {
+    /*
     tone(buzzer, sound);
     delay(100);
     noTone(buzzer);
@@ -217,20 +218,23 @@ void setup() {
     tone(buzzer, sound);
     delay(100);
     noTone(buzzer);
+    */
     digitalWrite(morto1_led, HIGH);
-    delay(50);
+    delay(100);
     digitalWrite(morto2_led, HIGH);
-    delay(50);
+    delay(100);
     digitalWrite(morto3_led, HIGH);
-    delay(50);
+    delay(100);
     digitalWrite(morto1_led, LOW);
-    delay(50);
+    delay(100);
     digitalWrite(morto2_led, LOW);
-    delay(50);
+    delay(100);
     digitalWrite(morto3_led, LOW);
-    delay(50);
-    delay(5000);
+    delay(100);
+    //delay(5000);
   }
+        Servo1.write(88);
+
 
 }
 
@@ -257,7 +261,6 @@ void loop() {
     previousMillis = currentMillis;
     if (counter % cicliodom == 0) {
       checkCalore(); //da fare
-      checkNero(); //da fare
       calcolaOdom(); //calcola odom
       checkPartito(); // controlla se lo switch da il parito
       sendStuff(); //manda la roba a ros
@@ -286,6 +289,7 @@ void loop() {
     if (digitalRead(startsw) && readygo) {
       driver1.setSpeeds(Right, (Left * -1));
       driver2.setSpeeds(Right, (Left * -1));
+      checkNero(); //check il nero
     } else {
       driver1.setSpeeds(0, 0);
       driver2.setSpeeds(0, 0);
@@ -417,24 +421,23 @@ void checkPartito() {
 }
 
 void checkNero() {
-    /*if (analogRead(reflection1A) > 53 && analogRead(reflection2A) > 53) {
+    if (analogRead(reflection1A) > 500 && analogRead(reflection2A) > 500 && abs(analogRead(reflection2A) - analogRead(reflection1A)) < 20 ) {
+      counter1 = 0;
+      counter2 = 0;
+      counter3 = 0;
+      counter4 = 0;
       tone(buzzer, sound);
       delay(100);
       noTone(buzzer);
-      while (abs(counterL) / 3 < tick) {
+      while (abs(counter1) < tick / 4) {
         driver1.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
         driver2.setSpeeds(-(kz * basecutoff), (kz * basecutoff));
+        encoder();
         nero[0] = '1';
       }
-      } else if (analogRead(reflection1A) < 35 && analogRead(reflection2A) < 35) {
-        tone(buzzer, sound);
-        delay(100);
-        noTone(buzzer);
-        while (abs(counterL) / 3 < tick) {
-          driver1.setSpeeds((kz * basecutoff), -(kz * basecutoff));
-          driver2.setSpeeds((kz * basecutoff), -(kz * basecutoff));
-        }
-      }*/
+      delay(100);
+      noTone(buzzer);
+      }
     }
     
 
@@ -475,15 +478,15 @@ void cagaCubi() {
 
   if (action <= 3) {
     while (action >= 0) {
-      Servo1.write(0);
+      Servo1.write(88);
       if (lastcube) {
-        Servo1.write(-170);
+        Servo1.write(58);
         lastcube = false;
       } else {
-        Servo1.write(170);
+        Servo1.write(118);
         lastcube = true;
       }
-      Servo1.write(0);
+      Servo1.write(88);
       action = action - 1;
     }
   }

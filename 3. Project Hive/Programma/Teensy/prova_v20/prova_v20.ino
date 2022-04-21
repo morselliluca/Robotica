@@ -108,12 +108,12 @@ float R = 0.09; // Wheel Radius
 float tick = 1240; // Encoder total tick
 float len = 0.18; // Distance between two wheels
 
-float kx = pow(2, pwmres) * 0.6;
-float kz = pow(2, pwmres) * 0.6;
+float kx = pow(2, pwmres);
+float kz = pow(2, pwmres);
 
 float kc = 0.3;
 
-float basecutoff = 1.00;
+float basecutoff = 0.6;
 
 float demandx;
 float demandz;
@@ -245,7 +245,7 @@ void loop() {
     counter2 = 0;
     counter3 = 0;
     counter4 = 0;
-    while (abs(counter1) < 1800) {
+    while (abs(counter1) < 1200) {
 
       driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
       driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));

@@ -147,6 +147,10 @@ Tutorial per Rosserail + navigation<br/>
 https://www.youtube.com/watch?v=q1u_cC-5Sac<br/>
 https://www.youtube.com/watch?v=HLLmV9LQoac<br/>
 
+Ros in generale:
+http://hotblackrobotics.github.io
+https://automaticaddison.com
+
 Ros navigation<br/>
 https://emanual.robotis.com/docs/en/platform/turtlebot3/learn/#books<br/>
 http://wiki.ros.org/ROS/Installation<br/>

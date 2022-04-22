@@ -108,12 +108,12 @@ float R = 0.09; // Wheel Radius
 float tick = 1240; // Encoder total tick
 float len = 0.18; // Distance between two wheels
 
-float kx = pow(2, pwmres);
-float kz = pow(2, pwmres);
+float kx = pow(2, pwmres) * 2.2;
+float kz = pow(2, pwmres) * 2.2;
 
-float kc = 0.3;
+float basecutoffrot = 0.285;
+float basecutoff = 0.4;
 
-float basecutoff = 0.6;
 
 float demandx;
 float demandz;
@@ -133,8 +133,6 @@ void velCallback(const geometry_msgs::Twist & vel) {
   demandx = vel.linear.x;
   demandz = vel.angular.z;
 
-  demandx = constrain(demandx, -1, 1);
-  demandz = constrain(demandz, -1, 1);
   if (demandx > 0) {
     demandx = map(demandx, 0, 1, (kx * basecutoff), kx);
   } else if (demandx < 0) {
@@ -245,10 +243,67 @@ void loop() {
     counter2 = 0;
     counter3 = 0;
     counter4 = 0;
-    while (abs(counter1) < 1200) {
+    
+    while (abs(counter1) < 450) {
 
-      driver1.setSpeeds((kz * basecutoff), (kz * basecutoff));
-      driver2.setSpeeds((kz * basecutoff), (kz * basecutoff));
+      driver1.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      driver2.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      encoder();
+    }
+    counter1 = 0;
+    counter2 = 0;
+    counter3 = 0;
+    counter4 = 0;
+    driver1.setSpeeds(0, 0);
+    driver2.setSpeeds(0, 0);
+    delay(1000);
+    
+    while (abs(counter1) < 450) {
+
+      driver1.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      driver2.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      encoder();
+    }
+    counter1 = 0;
+    counter2 = 0;
+    counter3 = 0;
+    counter4 = 0;
+    driver1.setSpeeds(0, 0);
+    driver2.setSpeeds(0, 0);
+    delay(1000);
+    
+    while (abs(counter1) < 450) {
+
+      driver1.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      driver2.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      encoder();
+    }
+    counter1 = 0;
+    counter2 = 0;
+    counter3 = 0;
+    counter4 = 0;
+    driver1.setSpeeds(0, 0);
+    driver2.setSpeeds(0, 0);
+    delay(1000);
+    
+    while (abs(counter1) < 450) {
+
+      driver1.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      driver2.setSpeeds((kz * basecutoffrot), (kz * basecutoffrot));
+      encoder();
+    }
+    counter1 = 0;
+    counter2 = 0;
+    counter3 = 0;
+    counter4 = 0;
+    driver1.setSpeeds(0, 0);
+    driver2.setSpeeds(0, 0);   
+    delay(3000);
+    
+    while (abs(counter1) < 200) {
+
+      driver1.setSpeeds(-(kz * basecutoffrot), -(kz * basecutoffrot));
+      driver2.setSpeeds(-(kz * basecutoffrot), -(kz * basecutoffrot));
       encoder();
     }
     driver1.setSpeeds(0, 0);
@@ -442,17 +497,18 @@ void checkNero() {
     
 
 void checkCalore() {
+  calore[0] = '0';
 
   mlx.AddrSet(IR1);
-  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
+  if (3 < (mlx.readObjectTempC() - mlx.readAmbientTempC())) {
     calore[0] = 'F';
   }
   mlx.AddrSet(IR2);
-  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
+  if (3 < (mlx.readObjectTempC() - mlx.readAmbientTempC())) {
     calore[0] = 'L';
   }
   mlx.AddrSet(IR3);
-  if (5 < mlx.readObjectTempC() - mlx.readAmbientTempC()) {
+  if (3 < (mlx.readObjectTempC() - mlx.readAmbientTempC())) {
     calore[0] = 'R';
   }
 }

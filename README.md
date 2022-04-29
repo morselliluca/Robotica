@@ -189,3 +189,11 @@ Se pensate di copiare pari pari il robot....non fatelo se avete bisogno di copia
 Luca Morselli:<br/>
 +39 3318670782 <br/>
 lucamorselli03@gmail.com<br/>
+
+https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/1.JPG
+
+https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/2.JPG
+
+https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/3.JPG
+
+https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/4.JPG

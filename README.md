@@ -147,15 +147,17 @@ Tutorial per Rosserail + navigation<br/>
 https://www.youtube.com/watch?v=q1u_cC-5Sac<br/>
 https://www.youtube.com/watch?v=HLLmV9LQoac<br/>
 
-Ros in generale:
-http://hotblackrobotics.github.io
-https://automaticaddison.com
+Ros in generale:<br/>
+http://hotblackrobotics.github.io<br/>
+https://automaticaddison.com<br/>
 
-Ros navigation<br/>
+Ros navigation:<br/>
 https://emanual.robotis.com/docs/en/platform/turtlebot3/learn/#books<br/>
 http://wiki.ros.org/ROS/Installation<br/>
 http://wiki.ros.org/catkin/Tutorials/create_a_workspace<br/>
 http://wiki.ros.org/navigation/Tutorials/RobotSetup<br/>
+http://wiki.ros.org/teb_local_planner<br/>
+
 
 		
 Mlx90614 come usarle e cambiare indirizzo<br/>
@@ -186,10 +188,6 @@ Usare in maniera informativa nessuno di questi progetti e perfetto ma possono es
 Siamo felici di aiutarvi per qualunque dubbio o perplessita<br/>
 Se pensate di copiare pari pari il robot....non fatelo se avete bisogno di copiare tutto pari pari non avete le competenze per farlo andare<br/>
 
-Luca Morselli:<br/>
-+39 3318670782 <br/>
-lucamorselli03@gmail.com<br/>
-
 ![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/1.JPG)
 
 ![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/2.JPG)
@@ -197,3 +195,7 @@ lucamorselli03@gmail.com<br/>
 ![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/3.JPG)
 
 ![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/4.JPG)
+
+Luca Morselli:<br/>
++39 3318670782 <br/>
+lucamorselli03@gmail.com<br/>

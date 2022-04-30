@@ -136,14 +136,14 @@ Da prova_v17 sul progetto Hive le funzioni hanno un timing e vengono eseguite es
 
 Source:<br/>
 
-Sensori di distanza arduino<br/>
+Sensori di distanza arduino:<br/>
 https://www.youtube.com/watch?v=6F1B_N6LuKw<br/>
 https://dronebotworkshop.com/hc-sr04-ultrasonic-distance-sensor-arduino/<br/>
 
 Libreria Pololu vnh5019, la base della libreria custom che troverete in/arduino-1.8.19/libraries/DriverDkv<br/>
 https://github.com/pololu/dual-vnh5019-motor-shield<br/>
 	
-Tutorial per Rosserail + navigation<br/>
+Tutorial per Rosserail + navigation:<br/>
 https://www.youtube.com/watch?v=q1u_cC-5Sac<br/>
 https://www.youtube.com/watch?v=HLLmV9LQoac<br/>
 

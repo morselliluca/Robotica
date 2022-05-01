@@ -136,47 +136,55 @@ Da prova_v17 sul progetto Hive le funzioni hanno un timing e vengono eseguite es
 
 Source:<br/>
 
-Sensori di distanza arduino<br/>
+Sensori di distanza arduino:<br/>
 https://www.youtube.com/watch?v=6F1B_N6LuKw<br/>
 https://dronebotworkshop.com/hc-sr04-ultrasonic-distance-sensor-arduino/<br/>
 
 Libreria Pololu vnh5019, la base della libreria custom che troverete in/arduino-1.8.19/libraries/DriverDkv<br/>
 https://github.com/pololu/dual-vnh5019-motor-shield<br/>
 	
-Tutorial per Rosserail + navigation<br/>
+Tutorial per Rosserail + navigation:<br/>
 https://www.youtube.com/watch?v=q1u_cC-5Sac<br/>
 https://www.youtube.com/watch?v=HLLmV9LQoac<br/>
 
-Ros in generale:
-http://hotblackrobotics.github.io
-https://automaticaddison.com
+Ros in generale:<br/>
+http://hotblackrobotics.github.io<br/>
+https://automaticaddison.com<br/>
 
-Ros navigation<br/>
+Ros navigation:<br/>
 https://emanual.robotis.com/docs/en/platform/turtlebot3/learn/#books<br/>
 http://wiki.ros.org/ROS/Installation<br/>
 http://wiki.ros.org/catkin/Tutorials/create_a_workspace<br/>
 http://wiki.ros.org/navigation/Tutorials/RobotSetup<br/>
+http://wiki.ros.org/teb_local_planner<br/>
+https://answers.ros.org/question/249216/rosserial-posearray-crashes-when-more-than-8-poses-are-used/<br/>
+
 
 		
-Mlx90614 come usarle e cambiare indirizzo<br/>
+Mlx90614 come usarle e cambiare indirizzo:<br/>
 https://www.instructables.com/Multiple-IR-Temperature-Sensors/<br/>
 	
-Il software per disegnare pcb che consiglio<br/>
+Il software per disegnare pcb che consiglio::<br/>
 https://easyeda.com/editor<br/>
 		
-Dove ordinare le pcb online<br/>
+Dove ordinare le pcb online:<br/>
 https://jlcpcb.com/<br/>
 		
-Dove ho ordinato i pezzi tagliati al laser in alluminio<br/>
+Dove ho ordinato i pezzi tagliati al laser in alluminio:<br/>
 https://www.laserboost.com/en/create<br/>
 	
-Arduino ide (non la 2.0 che non funziona con teensyduino)<br/>
+Arduino ide (non la 2.0 che non funziona con teensyduino):<br/>
 https://www.arduino.cc/en/software<br/>
 			
-Teensyduino<br/>
+Teensyduino:<br/>
+https://www.pjrc.com/teensy/td_usage.html<br/>
 https://www.pjrc.com/teensy/teensyduino.html<br/>
+https://www.pjrc.com/teensy/td_pulse.html<br/>
+https://www.pjrc.com/teensy/td_digital.html<br/>
+https://www.pjrc.com/teensy/td_serial.html<br/>
+https://www.pjrc.com/teensy/td_uart.html<br/>
 		
-Software Modellazione 3d (Fusion360 e gratis per gli studenti)<br/>	
+Software Modellazione 3d (Fusion360 e gratis per gli studenti):<br/>	
 https://www.autodesk.com/products/fusion-360/free-trial<br/>
 
 	
@@ -185,6 +193,14 @@ NOTA:<br/>
 Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti<br/>
 Siamo felici di aiutarvi per qualunque dubbio o perplessita<br/>
 Se pensate di copiare pari pari il robot....non fatelo se avete bisogno di copiare tutto pari pari non avete le competenze per farlo andare<br/>
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/1.JPG)
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/2.JPG)
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/3.JPG)
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/4.JPG)
 
 Luca Morselli:<br/>
 +39 3318670782 <br/>

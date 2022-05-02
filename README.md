@@ -99,6 +99,23 @@ All'inerno di 3. project Hive troverete (Maze):
 		
 	Lista.xls
 		la lista dei pezzi che compongono il robot
+		
+
+All'inerno di 4. project Help troverete (Line, in aiuto al team A.L.D.O. per i modniali di robotica):
+
+	/La scocca in 3d per la line
+	
+	/I modelli dai pezzi scelti
+	
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/1.JPG)
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/2.JPG)
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/3.JPG)
+
+![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/4.JPG)
+
 
 Faq:
 
@@ -187,20 +204,11 @@ https://www.pjrc.com/teensy/td_uart.html<br/>
 Software Modellazione 3d (Fusion360 e gratis per gli studenti):<br/>	
 https://www.autodesk.com/products/fusion-360/free-trial<br/>
 
-	
-	
+
 NOTA:<br/>
 Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti<br/>
 Siamo felici di aiutarvi per qualunque dubbio o perplessita<br/>
 Se pensate di copiare pari pari il robot....non fatelo se avete bisogno di copiare tutto pari pari non avete le competenze per farlo andare<br/>
-
-![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/1.JPG)
-
-![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/2.JPG)
-
-![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/3.JPG)
-
-![alt text](https://github.com/morselliluca/Robotica/blob/main/3.%20Project%20Hive/foto/4.JPG)
 
 Luca Morselli:<br/>
 +39 3318670782 <br/>

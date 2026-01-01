@@ -208,4 +208,3 @@ https://www.autodesk.com/products/fusion-360/free-trial<br/>
 NOTA:<br/>
 Usare in maniera informativa nessuno di questi progetti e perfetto ma possono essere usati come una buona base per capire il funzionamento dei vari componenti<br/>
 Siamo felici di aiutarvi per qualunque dubbio o perplessita<br/>
-Se pensate di copiare pari pari il robot....non fatelo se avete bisogno di copiare tutto pari pari non avete le competenze per farlo andare<br/>
